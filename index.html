@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ferreira Júnior — Portfólio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #050608;
+    --bg-1: #0A0C10;
+    --bg-2: #0F1116;
+    --glass: rgba(255,255,255,0.045);
+    --glass-strong: rgba(255,255,255,0.075);
+    --glass-border: rgba(255,255,255,0.09);
+    --text: #f1f1f4;
+    --text-muted: #8C8FA0;
+    --gold: #F2B84B;
+    --violet: #9C8FE0;
+    --glow-gold: rgba(242,184,75,0.30);
+    --glow-violet: rgba(156,143,224,0.28);
+    --max-w: 1000px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+
+  .mono{
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: var(--gold);
+  }
+
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .wrap{ max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- ambient glow blobs ---------- */
+  .glow-field{ position: fixed; inset:0; z-index:-2; overflow:hidden; }
+  .blob{
+    position:absolute; border-radius:50%;
+    filter: blur(90px);
+    opacity: 0.35;
+    will-change: transform;
+  }
+  .blob-1{ width:520px; height:520px; background: var(--gold); top:-160px; left:-120px; animation: drift1 22s ease-in-out infinite; }
+  .blob-2{ width:460px; height:460px; background: var(--violet); top:220px; right:-140px; animation: drift2 26s ease-in-out infinite; }
+  .blob-3{ width:380px; height:380px; background: var(--violet); bottom:-140px; left:30%; opacity:0.22; animation: drift1 30s ease-in-out infinite reverse; }
+  @keyframes drift1{ 0%,100%{ transform: translate(0,0);} 50%{ transform: translate(40px,60px);} }
+  @keyframes drift2{ 0%,100%{ transform: translate(0,0);} 50%{ transform: translate(-50px,40px);} }
+
+  /* ---------- glass base ---------- */
+  .glass{
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border-radius: 16px;
+  }
+
+  /* ---------- Nav ---------- */
+  nav{
+    position: sticky; top: 16px; z-index: 20;
+    max-width: var(--max-w);
+    margin: 16px auto 0;
+    padding: 0 24px;
+  }
+  nav .bar{
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 14px 22px;
+  }
+  nav .brand{ font-family:'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight:600; }
+  nav .brand span{ color: var(--gold); }
+  nav .nav-right{ display:flex; align-items:center; gap: 26px; }
+  nav ul{ list-style:none; display:flex; gap: 26px; margin:0; padding:0; font-size: 0.88rem; }
+  nav ul a { color: var(--text-muted); }
+  nav ul a:hover { color: var(--gold); text-decoration:none; }
+
+  .lang-switch{ display:flex; gap: 8px; }
+  .lang-btn{
+    padding: 5px 11px;
+    border-radius: 100px;
+    border: 1px solid var(--glass-border);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  }
+  .lang-btn:hover{ color: var(--text); transform: translateY(-1px); }
+  .lang-btn.active{ color: var(--gold); border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+
+  /* ---------- Hero ---------- */
+  .hero{ position: relative; padding: 120px 0 100px; }
+  .hero .wrap{ position: relative; display:grid; grid-template-columns: 1.3fr 0.9fr; gap: 48px; align-items:center; }
+  .eyebrow-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 8px 16px; margin-bottom: 26px;
+  }
+  .hero h1{
+    font-size: clamp(2.3rem, 5.2vw, 3.6rem);
+    max-width: 780px;
+    line-height: 1.12;
+  }
+  .hero h1 em{ color: var(--gold); font-style: normal; }
+  .hero p.lede{ margin-top: 22px; max-width: 560px; color: var(--text-muted); font-size: 1.05rem; }
+  .hero .cta-row{ margin-top: 34px; display:flex; gap:16px; flex-wrap: wrap; }
+
+  .photo-window{
+    padding: 10px;
+    animation: float 7s ease-in-out infinite;
+  }
+  .photo-window .window-bar{ margin: -10px -10px 10px; }
+  .photo-window img{
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border-radius: 10px;
+    display:block;
+    filter: grayscale(15%) contrast(1.03);
+  }
+  @media (max-width: 860px){
+    .hero .wrap{ grid-template-columns: 1fr; }
+    .photo-window{ max-width: 280px; margin: 0 auto; order: -1; }
+  }
+  .btn{ display:inline-block; padding: 13px 24px; border-radius: 100px; font-size: 0.9rem; font-weight: 500; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+  .btn-solid{ background: var(--gold); color: #08090C; box-shadow: 0 0 0 rgba(242,184,75,0); }
+  .btn-solid:hover{ text-decoration:none; transform: translateY(-2px); box-shadow: 0 10px 30px var(--glow-gold); }
+  .btn-outline{ color: var(--text); }
+  .btn-outline:hover{ text-decoration:none; transform: translateY(-2px); border-color: var(--gold); color: var(--gold); }
+
+  /* reveal-on-scroll */
+  .reveal{ opacity:0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in{ opacity:1; transform: translateY(0); }
+
+  /* ---------- Sections ---------- */
+  section{ padding: 70px 0; position: relative; }
+  .section-head{ margin-bottom: 40px; max-width: 620px; }
+  .section-head .mono{ display:block; margin-bottom: 12px; }
+  .section-head h2{ font-size: clamp(1.5rem, 3vw, 2rem); }
+  .section-head p{ color: var(--text-muted); margin-top: 12px; }
+
+  /* ---------- Sobre ---------- */
+  .about-grid{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; align-items: stretch; }
+  .about-card{ padding: 32px; }
+  .about-card p{ color: var(--text-muted); }
+  .about-card p + p { margin-top: 14px; }
+  .facts{ list-style:none; margin:0; padding: 28px 32px; height:100%; }
+  .facts li{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding: 13px 0; border-bottom: 1px solid var(--glass-border); font-size: 0.92rem; }
+  .facts li:last-child{ border-bottom:none; }
+  .facts li span:first-child{ color: var(--text-muted); }
+  .facts li span:last-child{ text-align:right; color: var(--text); font-weight: 500; }
+  .flag-inline{ display:inline-flex; align-items:center; gap:8px; }
+  .flag-inline img{ display:block; border-radius:2px; box-shadow: 0 0 0 1px var(--glass-border); }
+
+  /* ---------- Skills / Constellation ---------- */
+  .const-panel{ padding: 34px; }
+  .constellation-wrap svg{ width: 100%; height: auto; display:block; }
+  .const-line{ stroke: rgba(255,255,255,0.12); stroke-width: 1; }
+  .const-dot{ fill: var(--gold); }
+  .const-dot.learning{ fill: var(--violet); }
+  .const-label{ font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: var(--text-muted); }
+  .const-legend{ display:flex; gap: 28px; margin-top: 22px; font-size: 0.82rem; color: var(--text-muted); }
+  .const-legend span{ display:inline-flex; align-items:center; gap:8px; }
+  .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+  .dot.g{ background: var(--gold); }
+  .dot.v{ background: var(--violet); }
+
+  /* ---------- Projects — floating windows ---------- */
+  .project-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 26px; }
+  .window{
+    padding: 0;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    animation: float 6s ease-in-out infinite;
+  }
+  .window:nth-child(2){ animation-delay: -1.5s; }
+  .window:nth-child(3){ animation-delay: -3s; }
+  .window:nth-child(4){ animation-delay: -4.5s; }
+  @keyframes float{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-8px);} }
+  .window:hover{
+    transform: translateY(-10px) scale(1.015);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--glass-border);
+    border-color: rgba(242,184,75,0.35);
+  }
+  .window-bar{
+    display:flex; align-items:center; gap: 8px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .traffic{ width:10px; height:10px; border-radius:50%; }
+  .traffic.r{ background:#FF5F57; }
+  .traffic.y{ background:#FEBC2E; }
+  .traffic.g{ background:#28C840; }
+  .window-bar .win-title{ margin-left: 8px; font-family:'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+  .window-body{ padding: 22px; display:flex; flex-direction:column; gap:14px; }
+  .window-body h3{ font-size: 1.1rem; }
+  .window-body p{ color: var(--text-muted); font-size: 0.93rem; margin:0; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap: 8px; }
+  .tag{ font-family:'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-muted); border: 1px solid var(--glass-border); padding: 3px 10px; border-radius: 100px; }
+  .card-links{ display:flex; gap:18px; font-size: 0.86rem; }
+
+  @media (prefers-reduced-motion: reduce){
+    .window{ animation: none; }
+    .blob{ animation: none; }
+    .reveal{ transition:none; opacity:1; transform:none; }
+  }
+
+  /* ---------- Contato — ícones sociais ---------- */
+  .contact-box{ padding: 46px; display:flex; justify-content:center; align-items:center; }
+  .social-links{ display:flex; gap: 26px; align-items:center; }
+  .social-icon{
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .social-icon svg{ width: 24px; height: 24px; fill: var(--text); transition: fill 0.3s ease; }
+  .social-icon:hover{
+    transform: scale(1.18);
+    border-color: var(--gold);
+    box-shadow: 0 10px 30px var(--glow-gold);
+    text-decoration: none;
+  }
+  .social-icon:hover svg{ fill: var(--gold); }
+
+  footer{ padding: 36px 0 50px; text-align:center; color: var(--text-muted); font-size: 0.8rem; }
+
+  /* ---------- WhatsApp floating button ---------- */
+  .whats-btn{
+    position: fixed;
+    right: 26px;
+    bottom: 26px;
+    z-index: 30;
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    background: #25D366;
+    box-shadow: 0 8px 26px rgba(37,211,102,0.4);
+    animation: pulse 2.6s ease-in-out infinite;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .whats-btn:hover{ transform: translateY(-3px) scale(1.06); box-shadow: 0 12px 32px rgba(37,211,102,0.55); }
+  .whats-btn svg{ width: 30px; height: 30px; }
+  @keyframes pulse{
+    0%, 100%{ box-shadow: 0 8px 26px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.35); }
+    50%{ box-shadow: 0 8px 26px rgba(37,211,102,0.4), 0 0 0 10px rgba(37,211,102,0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .whats-btn{ animation: none; }
+  }
+
+  @media (max-width: 760px){
+    .about-grid{ grid-template-columns: 1fr; }
+    .project-grid{ grid-template-columns: 1fr; }
+    nav .bar{ flex-wrap: wrap; gap: 12px; }
+    nav .nav-right{ gap: 16px; }
+    nav ul{ gap: 14px; font-size: 0.78rem; }
+    .window{ animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-field" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<nav>
+  <div class="bar glass">
+    <div class="brand">Ferreira <span>Júnior</span></div>
+    <div class="nav-right">
+      <ul>
+        <li><a href="#sobre" data-i18n="nav_sobre">Sobre</a></li>
+        <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+        <li><a href="#projetos" data-i18n="nav_projetos">Projetos</a></li>
+        <li><a href="#contato" data-i18n="nav_contato">Contato</a></li>
+      </ul>
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="pt" aria-label="Português (Brasil)" aria-pressed="true">PT</button>
+        <button class="lang-btn" data-lang="en" aria-label="English" aria-pressed="false">EN</button>
+        <button class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="false">ES</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow-pill glass mono" data-i18n="hero_eyebrow">// dev iniciante · ciências da computação</span>
+      <h1 data-i18n="hero_h1" data-i18n-html>Explorando o <em>universo da computação</em>, uma linha de código por vez.</h1>
+      <p class="lede" data-i18n="hero_lede">
+        Olá, sou Ferreira Júnior, graduando em Ciências da Computação pela Estácio e no começo
+        da minha jornada como profissional de TI. Este espaço serve para eu documentar meu progresso até aqui, 
+        documentando o que estou aprendendo e projetos que estou participando.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-solid" href="#projetos" data-i18n="btn_ver_projetos">Ver projetos</a>
+        <a class="btn btn-outline glass" href="https://github.com/ferreirajrrr">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="photo-window glass">
+      <div class="window-bar">
+        <span class="traffic r"></span><span class="traffic y"></span><span class="traffic g"></span>
+        <span class="win-title">ferreira-junior.png</span>
+      </div>
+      <img src="assets/foto-perfil.png" alt="Foto de Ferreira Júnior">
+    </div>
+  </div>
+</header>
+
+<section id="sobre">
+  <div class="wrap about-grid">
+    <div class="about-card glass reveal">
+      <div class="section-head" style="margin-bottom:22px;">
+        <span class="mono" data-i18n="sobre_label">Sobre</span>
+        <h2 data-i18n="sobre_title">Quem está do outro lado do código...</h2>
+      </div>
+      <!-- EDITE AQUI: escreva 2 parágrafos curtos sobre você -->
+      <p data-i18n="sobre_p1">
+       Minha jornada na tecnologia não começou da forma tradicional. Nos últimos anos, construí uma carreira sólida na operação e direção de imagens para transmissões ao vivo na TV — um ambiente de altíssima pressão onde resolver problemas complexos e agir rápido é a regra. No entanto, movido pela curiosidade e por uma paixão profunda por computação, decidi dar um novo passo e iniciar minha transição de carreira para a computação.
+      </p>
+      <p data-i18n="sobre_p2">
+        Atualmente, busco uma oportunidade de estágio na área de tecnologia (desenvolvimento, infraestrutura ou dados). Meu objetivo é integrar um time onde eu possa aprender na prática e contribuir desde o primeiro dia com minha adaptabilidade, visão analítica e capacidade de aprender novos temas rapidamente.
+      </p>
+    </div>
+    <ul class="facts glass reveal">
+      <li><span data-i18n="fact_formacao_label">Formação</span><span data-i18n="fact_formacao_value">Ciências da Computação — Estácio</span></li>
+      <li><span data-i18n="fact_baseado_label">Baseado em</span>
+        <span class="flag-inline">
+          Fortaleza, Ceará
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Bandeira do Brasil" width="22" height="15">
+        </span>
+      </li>
+      <li><span data-i18n="fact_foco_label">Foco atual</span><span data-i18n="fact_foco_value">Introdução à Programação</span></li>
+      <li><span data-i18n="fact_ia_label">Uso de IA</span><span data-i18n="fact_ia_value">Desenvolvimento de projetos/códigos</span></li>
+      <li><span data-i18n="fact_disponivel_label">Disponível para</span><span data-i18n="fact_disponivel_value">Estágio</span></li>
+      <li><span>GitHub</span><span><a href="https://github.com/ferreirajrrr">ferreirajrrr</a></span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="mono" data-i18n="skills_label">Skills</span>
+      <h2 data-i18n="skills_title">Mapa de habilidades</h2>
+      <p data-i18n="skills_p">Cada estrela é uma tecnologia — as douradas já foram estudadas, as violeta estão em estudo agora. A IA generativa também faz parte do processo: uso como apoio para aprender mais rápido e prototipar os projetos.</p>
+    </div>
+    <div class="const-panel glass reveal">
+      <div class="constellation-wrap">
+        <svg viewBox="0 0 800 260" role="img" aria-label="Mapa de habilidades em formato de constelação">
+          <line class="const-line" x1="90" y1="70" x2="230" y2="140"/>
+          <line class="const-line" x1="230" y1="140" x2="380" y2="60"/>
+          <line class="const-line" x1="230" y1="140" x2="360" y2="210"/>
+          <line class="const-line" x1="380" y1="60" x2="520" y2="120"/>
+          <line class="const-line" x1="520" y1="120" x2="650" y2="70"/>
+          <line class="const-line" x1="520" y1="120" x2="600" y2="200"/>
+          <line class="const-line" x1="380" y1="60" x2="440" y2="150"/>
+
+          <circle class="const-dot" cx="90" cy="70" r="5"/>
+          <text class="const-label" x="75" y="50">HTML</text>
+
+          <circle class="const-dot" cx="230" cy="140" r="5"/>
+          <text class="const-label" x="220" y="165">CSS</text>
+
+          <circle class="const-dot" cx="380" cy="60" r="5"/>
+          <text class="const-label" x="350" y="40">JavaScript</text>
+
+          <circle class="const-dot" cx="520" cy="120" r="5"/>
+          <text class="const-label" data-i18n="label_redes" x="505" y="105">Redes</text>
+
+          <circle class="const-dot" cx="440" cy="150" r="5"/>
+          <text class="const-label" data-i18n="label_ia" x="432" y="174">IA</text>
+
+          <circle class="const-dot learning" cx="360" cy="210" r="4.5"/>
+          <text class="const-label" data-i18n="label_bd" x="312" y="234">Banco de Dados</text>
+
+          <circle class="const-dot learning" cx="650" cy="70" r="4.5"/>
+          <text class="const-label" x="630" y="52">Python</text>
+
+          <circle class="const-dot learning" cx="600" cy="200" r="4.5"/>
+          <text class="const-label" x="590" y="224">PHP</text>
+        </svg>
+        <div class="const-legend">
+          <span><i class="dot g"></i> <span data-i18n="legend_estudou">Já estudou</span></span>
+          <span><i class="dot v"></i> <span data-i18n="legend_estudando">Estudando agora</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projetos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="mono" data-i18n="projetos_label">Projetos</span>
+      <h2 data-i18n="projetos_title">O que já construí</h2>
+      <p data-i18n="projetos_p">Alguns projetos testes feitos todos com consulta de IA e codados no VS Code.</p>
+    </div>
+    <div class="project-grid">
+
+      <div class="window glass reveal">
+        <div class="window-bar">
+          <span class="traffic r"></span><span class="traffic y"></span><span class="traffic g"></span>
+          <span class="win-title" data-i18n="proj1_title">Linguagens de Programação - Alura</span>
+        </div>
+        <div class="window-body">
+          <h3>linguagens-dev</h3>
+          <p data-i18n="proj1_desc">Trabalho feito pra conclusão de um workshop oferecido pela Alura, nele aprendemos a usar o Gemini na criação de aplicações web.</p>
+          <div class="tag-row"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+          <div class="card-links">
+            <a href="https://github.com/ferreirajrrr/linguagens-dev.git" data-i18n="link_code">Código ↗</a>
+            <a href="https://ferreirajrrr.github.io/linguagens-dev/">Demo ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="window glass reveal">
+        <div class="window-bar">
+          <span class="traffic r"></span><span class="traffic y"></span><span class="traffic g"></span>
+          <span class="win-title" data-i18n="proj2_title">Babá Eletrônica</span>
+        </div>
+        <div class="window-body">
+          <h3>baba-eletronica</h3>
+          <p data-i18n="proj2_desc">Simula um dispositivo de monitoramento para bebês/pets. Desenvolvido em Python, conta com recursos de WebSockets, Google Drive API e MediaRecorder API. </p>
+          <div class="tag-row"><span class="tag">Python</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+          <div class="card-links">
+            <a href="https://github.com/ferreirajrrr/.testeJr.git" data-i18n="link_code">Código ↗</a>
+            <a href="https://testejr.onrender.com/">Demo ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="wrap">
+    <div class="contact-box glass reveal">
+      <div class="social-links">
+        <a class="social-icon glass" href="https://github.com/ferreirajrrr" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495.997.108-.775.42-1.305.762-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.604-.015 2.896-.015 3.286 0 .322.216.696.825.578C20.565 21.795 24 17.298 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a class="social-icon glass" href="https://www.linkedin.com/in/57486b8b/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.94v5.666H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="social-icon glass" href="https://wa.me/5585981562086" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.33 4.95L2.05 22l5.28-1.38a9.87 9.87 0 0 0 4.71 1.2h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.19 0 4.25.85 5.79 2.4a8.2 8.2 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.18 8.18 0 0 1-1.26-4.37c0-4.55 3.7-8.24 8.29-8.24zm-4.55 4.5c-.16 0-.42.06-.64.31-.22.25-.85.83-.85 2.02s.87 2.34.99 2.5c.12.16 1.69 2.7 4.19 3.7 2.07.83 2.49.66 2.94.62.45-.04 1.45-.59 1.66-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.45-.28-.24-.12-1.45-.71-1.67-.8-.22-.08-.39-.12-.55.13-.16.24-.63.79-.78.96-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.35-.76-1.85-.2-.48-.4-.42-.55-.42h-.47z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" data-i18n="footer_text">2026 · Todos os direitos reservados · Registro de bordo em construção. Foco em semântica, performance e código limpo.</div>
+</footer>
+
+<a class="whats-btn" href="https://wa.me/5585981562086" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" data-i18n="aria_whatsapp" data-i18n-attr="aria-label">
+  <svg viewBox="0 0 24 24" fill="#08090C" aria-hidden="true">
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.33 4.95L2.05 22l5.28-1.38a9.87 9.87 0 0 0 4.71 1.2h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.19 0 4.25.85 5.79 2.4a8.2 8.2 0 0 1 2.41 5.84c0 4.55-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.18 8.18 0 0 1-1.26-4.37c0-4.55 3.7-8.24 8.29-8.24zm-4.55 4.5c-.16 0-.42.06-.64.31-.22.25-.85.83-.85 2.02s.87 2.34.99 2.5c.12.16 1.69 2.7 4.19 3.7 2.07.83 2.49.66 2.94.62.45-.04 1.45-.59 1.66-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.45-.28-.24-.12-1.45-.71-1.67-.8-.22-.08-.39-.12-.55.13-.16.24-.63.79-.78.96-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.35-.76-1.85-.2-.48-.4-.42-.55-.42h-.47z"/>
+  </svg>
+</a>
+
+<script>
+  // ---------- i18n ----------
+  const translations = {
+    pt: {
+      nav_sobre: "Sobre", nav_skills: "Skills", nav_projetos: "Projetos", nav_contato: "Contato",
+      hero_eyebrow: "// dev iniciante · ciências da computação",
+      hero_h1: 'Explorando o <em>universo da computação</em>, uma linha de código por vez.',
+      hero_lede: "Olá, sou Ferreira Júnior, graduando em Ciências da Computação pela Estácio e no começo da minha jornada como profissional de TI. Este espaço serve para eu documentar meu progresso até aqui, documentando o que estou aprendendo e projetos que estou participando.",
+      btn_ver_projetos: "Ver projetos",
+      sobre_label: "Sobre", sobre_title: "Quem está do outro lado do código...",
+      sobre_p1: "Minha jornada na tecnologia não começou da forma tradicional. Nos últimos anos, construí uma carreira sólida na operação e direção de imagens para transmissões ao vivo na TV — um ambiente de altíssima pressão onde resolver problemas complexos e agir rápido é a regra. No entanto, movido pela curiosidade e por uma paixão profunda por computação, decidi dar um novo passo e iniciar minha transição de carreira para a computação.",
+      sobre_p2: "Atualmente, busco uma oportunidade de estágio na área de tecnologia (desenvolvimento, infraestrutura ou dados). Meu objetivo é integrar um time onde eu possa aprender na prática e contribuir desde o primeiro dia com minha adaptabilidade, visão analítica e capacidade de aprender novos temas rapidamente.",
+      fact_formacao_label: "Formação", fact_formacao_value: "Ciências da Computação — Estácio",
+      fact_baseado_label: "Baseado em",
+      fact_foco_label: "Foco atual", fact_foco_value: "Introdução à Programação",
+      fact_ia_label: "Uso de IA", fact_ia_value: "Desenvolvimento de projetos/códigos",
+      fact_disponivel_label: "Disponível para", fact_disponivel_value: "Estágio",
+      skills_label: "Skills", skills_title: "Mapa de habilidades",
+      skills_p: "Cada estrela é uma tecnologia — as douradas já foram estudadas, as violeta estão em estudo agora. A IA generativa também faz parte do processo: uso como apoio para aprender mais rápido e prototipar os projetos.",
+      label_redes: "Redes", label_ia: "IA", label_bd: "Banco de Dados",
+      legend_estudou: "Já estudou", legend_estudando: "Estudando agora",
+      projetos_label: "Projetos", projetos_title: "O que já construí",
+      projetos_p: "Alguns projetos testes feitos todos com consulta de IA e codados no VS Code.",
+      proj1_title: "Linguagens de Programação - Alura",
+      proj1_desc: "Trabalho feito pra conclusão de um workshop oferecido pela Alura, nele aprendemos a usar o Gemini na criação de aplicações web.",
+      proj2_title: "Babá Eletrônica",
+      proj2_desc: "Simula um dispositivo de monitoramento para bebês/pets. Desenvolvido em Python, conta com recursos de WebSockets, Google Drive API e MediaRecorder API.",
+      link_code: "Código ↗",
+      footer_text: "2026 · Todos os direitos reservados · Registro de bordo em construção. Foco em semântica, performance e código limpo.",
+      aria_whatsapp: "Falar no WhatsApp"
+    },
+    en: {
+      nav_sobre: "About", nav_skills: "Skills", nav_projetos: "Projects", nav_contato: "Contact",
+      hero_eyebrow: "// beginner dev · computer science",
+      hero_h1: 'Exploring the <em>universe of computing</em>, one line of code at a time.',
+      hero_lede: "Hi, I'm Ferreira Júnior, a Computer Science student at Estácio just starting out as an IT professional. This space is where I document my progress, what I'm learning, and the projects I'm working on.",
+      btn_ver_projetos: "View projects",
+      sobre_label: "About", sobre_title: "Who's behind the code...",
+      sobre_p1: "My journey into tech didn't start the traditional way. For the past few years I built a solid career operating and directing live TV broadcasts — a high-pressure environment where solving complex problems fast is the norm. Driven by curiosity and a deep passion for computing, I decided to take a new step and move into a career in technology.",
+      sobre_p2: "I'm currently looking for an internship in tech (development, infrastructure, or data). My goal is to join a team where I can learn hands-on and contribute from day one with my adaptability, analytical mindset, and ability to pick up new topics quickly.",
+      fact_formacao_label: "Education", fact_formacao_value: "Computer Science — Estácio",
+      fact_baseado_label: "Based in",
+      fact_foco_label: "Current focus", fact_foco_value: "Intro to Programming",
+      fact_ia_label: "Use of AI", fact_ia_value: "Building and coding projects",
+      fact_disponivel_label: "Available for", fact_disponivel_value: "Internship",
+      skills_label: "Skills", skills_title: "Skills map",
+      skills_p: "Each star is a technology — gold ones have already been studied, violet ones are in progress. Generative AI is also part of the process: I use it to learn faster and prototype projects.",
+      label_redes: "Networking", label_ia: "AI", label_bd: "Databases",
+      legend_estudou: "Already studied", legend_estudando: "Currently studying",
+      projetos_label: "Projects", projetos_title: "What I've built so far",
+      projetos_p: "A few test projects, all built with AI assistance and coded in VS Code.",
+      proj1_title: "Programming Languages - Alura",
+      proj1_desc: "Built to complete a workshop offered by Alura, where we learned to use Gemini to build web applications.",
+      proj2_title: "Baby Monitor",
+      proj2_desc: "Simulates a monitoring device for babies/pets. Built with Python, featuring WebSockets, the Google Drive API, and the MediaRecorder API.",
+      link_code: "Code ↗",
+      footer_text: "2026 · All rights reserved · Dev log still under construction. Focused on semantics, performance, and clean code.",
+      aria_whatsapp: "Chat on WhatsApp"
+    },
+    es: {
+      nav_sobre: "Sobre mí", nav_skills: "Habilidades", nav_projetos: "Proyectos", nav_contato: "Contacto",
+      hero_eyebrow: "// dev principiante · ciencias de la computación",
+      hero_h1: 'Explorando el <em>universo de la computación</em>, una línea de código a la vez.',
+      hero_lede: "Hola, soy Ferreira Júnior, estudiante de Ciencias de la Computación en Estácio y al comienzo de mi camino como profesional de TI. Este espacio es donde documento mi progreso, lo que estoy aprendiendo y los proyectos en los que participo.",
+      btn_ver_projetos: "Ver proyectos",
+      sobre_label: "Sobre mí", sobre_title: "Quién está detrás del código...",
+      sobre_p1: "Mi camino hacia la tecnología no empezó de forma tradicional. En los últimos años construí una carrera sólida operando y dirigiendo transmisiones de TV en vivo — un entorno de altísima presión donde resolver problemas complejos y actuar rápido es la norma. Movido por la curiosidad y una pasión profunda por la computación, decidí dar un nuevo paso y hacer la transición hacia la tecnología.",
+      sobre_p2: "Actualmente busco una oportunidad de prácticas en el área de tecnología (desarrollo, infraestructura o datos). Mi objetivo es integrarme a un equipo donde pueda aprender en la práctica y contribuir desde el primer día con mi adaptabilidad, visión analítica y capacidad de aprender rápido.",
+      fact_formacao_label: "Formación", fact_formacao_value: "Ciencias de la Computación — Estácio",
+      fact_baseado_label: "Ubicación",
+      fact_foco_label: "Enfoque actual", fact_foco_value: "Introducción a la Programación",
+      fact_ia_label: "Uso de IA", fact_ia_value: "Desarrollo de proyectos/código",
+      fact_disponivel_label: "Disponible para", fact_disponivel_value: "Prácticas",
+      skills_label: "Habilidades", skills_title: "Mapa de habilidades",
+      skills_p: "Cada estrella es una tecnología — las doradas ya fueron estudiadas, las violeta están en estudio. La IA generativa también es parte del proceso: la uso para aprender más rápido y prototipar proyectos.",
+      label_redes: "Redes", label_ia: "IA", label_bd: "Bases de Datos",
+      legend_estudou: "Ya estudiado", legend_estudando: "Estudiando ahora",
+      projetos_label: "Proyectos", projetos_title: "Lo que ya construí",
+      projetos_p: "Algunos proyectos de prueba, todos hechos con ayuda de IA y programados en VS Code.",
+      proj1_title: "Lenguajes de Programación - Alura",
+      proj1_desc: "Trabajo hecho para concluir un taller ofrecido por Alura, donde aprendimos a usar Gemini para crear aplicaciones web.",
+      proj2_title: "Niñera Electrónica",
+      proj2_desc: "Simula un dispositivo de monitoreo para bebés/mascotas. Desarrollado en Python, con WebSockets, la API de Google Drive y la API MediaRecorder.",
+      link_code: "Código ↗",
+      footer_text: "2026 · Todos los derechos reservados · Bitácora aún en construcción. Enfocado en semántica, rendimiento y código limpio.",
+      aria_whatsapp: "Hablar por WhatsApp"
+    }
+  };
+
+  function applyLanguage(lang){
+    document.documentElement.setAttribute('lang', lang === 'pt' ? 'pt-BR' : lang);
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const value = translations[lang][key];
+      if (value === undefined) return;
+      if (el.hasAttribute('data-i18n-attr')) {
+        el.setAttribute(el.getAttribute('data-i18n-attr'), value);
+      } else if (el.hasAttribute('data-i18n-html')) {
+        el.innerHTML = value;
+      } else {
+        el.textContent = value;
+      }
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      const active = btn.dataset.lang === lang;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active);
+    });
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+  });
+
+  // padrão: português do Brasil
+  applyLanguage('pt');
+
+  // parallax leve nos blobs de fundo, seguindo o mouse
+  const blobs = document.querySelectorAll('.blob');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion){
+    window.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 30;
+      const y = (e.clientY / window.innerHeight - 0.5) * 30;
+      blobs.forEach((b, i) => {
+        const factor = (i + 1) * 0.6;
+        b.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+      });
+    });
+  }
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
