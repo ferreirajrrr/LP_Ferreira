@@ -58,6 +58,7 @@
   /* ---------- ambient glow blobs ---------- */
   .glow-field{position:fixed;inset:0;z-index:-2;overflow:hidden;}
   #flow-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.38;pointer-events:none;}
+  .flow-wash{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 12%,rgba(5,6,8,.3) 72%,var(--bg) 115%);pointer-events:none;}
   .blob{
     position:absolute; border-radius:50%;
     filter: blur(90px);
@@ -143,9 +144,39 @@
     display:block;
     filter: grayscale(15%) contrast(1.03);
   }
+  .tunnel-section{height:250vh;padding:0!important;position:relative;isolation:isolate;scroll-margin-top:0;}
+  .tunnel-sticky{position:sticky;top:0;height:100svh;min-height:620px;overflow:hidden;display:grid;place-items:center;perspective:1000px;background:radial-gradient(ellipse at 50% 54%,rgba(156,143,224,.1),transparent 52%);}
+  .tunnel-sticky::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.17) .7px,transparent .8px);background-size:28px 28px;opacity:.18;mask-image:radial-gradient(ellipse at center,#000 5%,transparent 74%);}
+  .tunnel-title{position:absolute;z-index:3;left:max(6vw,calc((100vw - var(--max-w))/2));top:20%;pointer-events:none;}
+  .tunnel-title h2{font-size:clamp(2.8rem,7vw,6.5rem);line-height:.9;letter-spacing:-.06em;margin-top:18px;text-shadow:0 8px 40px #050608;}
+  .tunnel-title h2 em{font-style:normal;color:var(--gold);}
+  .tunnel-title h2 [data-i18n]{display:inline;}
+  .tunnel-title p{font: .72rem 'JetBrains Mono',monospace;color:#b5b1c9;margin-top:24px;letter-spacing:.08em;text-transform:uppercase;}
+  .tunnel-track{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none;}
+  .tunnel-card{position:absolute;left:50%;top:50%;width:clamp(180px,19vw,270px);aspect-ratio:4/5;padding:9px;border:1px solid rgba(255,255,255,.17);border-radius:17px;background:rgba(15,16,22,.84);box-shadow:0 26px 90px rgba(0,0,0,.55);color:var(--text);text-decoration:none;overflow:hidden;display:flex;flex-direction:column;gap:8px;transform-style:preserve-3d;will-change:transform,opacity;pointer-events:auto;}
+  .tunnel-card.is-language{width:clamp(145px,15vw,210px);aspect-ratio:4/5;}
+  .tunnel-card.is-language .code-mark{height:62%;font-size:clamp(2.8rem,6vw,4.6rem);}
+  .tunnel-card:hover{color:#fff;text-decoration:none;border-color:rgba(242,184,75,.7);}
+  .tunnel-card span{font: .62rem 'JetBrains Mono',monospace;letter-spacing:.1em;color:var(--gold);padding:3px 3px 0;}
+  .tunnel-card img{width:100%;height:68%;object-fit:cover;border-radius:10px;filter:saturate(.74);}
+  .tunnel-card strong{font:600 1.05rem 'Space Grotesk',sans-serif;padding:0 3px;}
+  .tunnel-card small{font-size:.68rem;color:var(--text-muted);padding:0 3px;}
+  .tunnel-card .code-mark{height:68%;display:grid;place-items:center;border-radius:10px;background:radial-gradient(circle at 70% 20%,rgba(156,143,224,.28),transparent 45%),linear-gradient(145deg,#171821,#0a0b10);font:700 clamp(2.6rem,7vw,5.8rem) 'JetBrains Mono',monospace;letter-spacing:-.09em;color:var(--card-accent,var(--gold));text-shadow:0 0 34px rgba(156,143,224,.3);}
+  .tunnel-card img.brand-art{object-fit:contain;background:#071918;padding:8px;filter:none;}
+  .tunnel-card.is-language{--card-accent:#9c8fe0;}
+  .tunnel-card:focus-visible{outline:2px solid var(--gold);outline-offset:5px;}
+  .tunnel-orbit{position:absolute;left:50%;top:54%;border:1px solid rgba(156,143,224,.2);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;}
+  .tunnel-orbit-a{width:min(46vw,620px);aspect-ratio:1;box-shadow:0 0 100px rgba(156,143,224,.08),inset 0 0 90px rgba(156,143,224,.04);}
+  .tunnel-orbit-b{width:min(72vw,980px);aspect-ratio:1;border-style:dashed;opacity:.5;}
+  .tunnel-progress{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);width:min(220px,44vw);height:2px;background:rgba(255,255,255,.15);z-index:4;}
+  .tunnel-progress span{display:block;width:100%;height:100%;background:var(--gold);transform:scaleX(0);transform-origin:left;}
+  .tunnel-index{position:absolute;bottom:20px;right:6vw;z-index:4;display:flex;align-items:center;gap:10px;color:#aaa7ba;}
+  .tunnel-index i{display:block;width:48px;height:1px;background:rgba(255,255,255,.28);}
   @media (max-width: 860px){
     .hero .wrap{ grid-template-columns: 1fr; }
     .photo-window{ max-width: 280px; margin: 0 auto; order: -1; }
+    .tunnel-title{left:6vw;top:13%;}
+    .tunnel-card{width:clamp(155px,30vw,220px);}
   }
   .btn{ display:inline-block; padding: 13px 24px; border-radius: 100px; font-size: 0.9rem; font-weight: 500; transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease, background .3s ease; }
   .btn-solid{ background: var(--gold); color: #08090C; box-shadow: 0 0 0 rgba(242,184,75,0); }
@@ -247,6 +278,12 @@
 
   @media (prefers-reduced-motion: reduce){
     .blob{ animation: none; }
+    .tunnel-section{height:auto;padding:55px 0!important;}
+    .tunnel-sticky{position:relative;min-height:0;height:auto;display:block;padding:100px 22px 66px;}
+    .tunnel-title{position:relative;left:auto;top:auto;margin:0 auto 36px;max-width:var(--max-w);}
+    .tunnel-track{position:relative;inset:auto;display:flex;gap:14px;overflow-x:auto;padding:12px 0 22px;perspective:none;}
+    .tunnel-card{position:relative;left:auto;top:auto;flex:0 0 180px;opacity:1!important;transform:none!important;}
+    .tunnel-orbit,.tunnel-progress,.tunnel-index{display:none;}
     .reveal{ transition:none; opacity:1; transform:none; }
     .hero-copy > *, .photo-window{animation:none;opacity:1;filter:none;transform:none;}
     .const-line{stroke-dashoffset:0;transition:none}.const-dot,.const-label{opacity:1;transition:none;transform:none;}
@@ -313,6 +350,12 @@
     .project-copy{margin-top:66px;}
     .hero{padding-top:76px;}
     .photo-window{max-width:240px;}
+    .tunnel-section{height:210vh;}
+    .tunnel-sticky{min-height:540px;}
+    .tunnel-title{top:12%;left:20px;}
+    .tunnel-title h2{font-size:clamp(2.7rem,13vw,4.4rem);}
+    .tunnel-card{width:clamp(145px,48vw,190px);}
+    .tunnel-orbit-a{width:72vw}.tunnel-orbit-b{width:110vw}
   }
   @media (max-width:480px){nav{padding:0 14px}nav .bar{padding:12px 14px}.wrap{padding:0 18px}.hero .wrap{gap:36px}.hero h1{font-size:clamp(2.55rem,13vw,4rem)}.const-panel{padding:18px 14px}.constellation-wrap svg{height:220px}.const-label{font-size:14px}.skill-constellation{grid-template-columns:1fr}.const-legend{gap:12px;flex-wrap:wrap}.project-card{min-height:360px}.whats-btn{right:18px;bottom:18px}.contact-box{padding:16px}.social-links{gap:14px}.social-icon{width:44px;height:44px}#contato{padding-top:28px;padding-bottom:4px}footer{padding:10px 0 14px}}
 </style>
@@ -356,10 +399,29 @@
       </div>
     </div>
     <div class="photo-window glass">
-      <img src="assets/foto-perfil.png" alt="Foto de Francisco Eudes Ferreira Júnior">
+      <img src="assets/foto-perfil.jpeg" alt="Foto de Francisco Eudes Ferreira Júnior">
     </div>
   </div>
 </header>
+
+<section class="tunnel-section" id="tunnel" aria-label="Projetos em perspectiva">
+  <div class="tunnel-sticky">
+    <div class="tunnel-orbit tunnel-orbit-a"></div><div class="tunnel-orbit tunnel-orbit-b"></div>
+    <div class="tunnel-title"><span class="mono" data-i18n="tunnel_eyebrow">PORTFÓLIO · SELEÇÃO</span><h2><span data-i18n="tunnel_title_first">Projetos em</span> <em data-i18n="tunnel_title_second">movimento.</em></h2><p data-i18n="tunnel_hint">Role para atravessar a galeria</p></div>
+    <div class="tunnel-track">
+      <a class="tunnel-card" href="https://n3producoes.pages.dev/" target="_blank" rel="noopener"><span>01 / CULTURA</span><img src="assets/projects/n3-producoes.webp" alt="Imagem de projeto cultural da N3 Produções"><strong>N3 Produções</strong><small data-i18n="tunnel_n3">Plataforma cultural · Pages, D1, R2</small></a>
+      <a class="tunnel-card" href="https://auradigital.studio/" target="_blank" rel="noopener"><span>02 / DIGITAL</span><img class="brand-art" src="assets/projects/aura-software-house.png" alt="Logo AURA Software House"><strong>AURA Software House</strong><small data-i18n="tunnel_aura">Desenvolvimento de software · Web</small></a>
+      <a class="tunnel-card" href="https://cativa.auralandingpages.com.br/" target="_blank" rel="noopener"><span>03 / SAAS</span><img src="assets/projects/cativa-medica.jpg" alt="Imagem da página do produto Cativa para saúde"><strong>Cativa</strong><small data-i18n="tunnel_cativa">Gestão de clínicas · Workers, D1</small></a>
+      <a class="tunnel-card" href="https://duplotec.com.br/" target="_blank" rel="noopener"><span>04 / COMÉRCIO</span><img src="assets/projects/duplotec.jpg" alt="Imagem de apresentação da Duplotec"><strong>Duplotec</strong><small data-i18n="tunnel_duplo">Presença digital · SEO local</small></a>
+      <a class="tunnel-card" href="https://ferreirajrrr.github.io/linguagens-dev/" target="_blank" rel="noopener"><span>05 / WEB</span><div class="code-mark" aria-hidden="true">&lt;/&gt;</div><strong data-i18n="tunnel_web">Primeiros experimentos web</strong><small>HTML · CSS · JavaScript</small></a>
+      <a class="tunnel-card is-language" href="#skills"><span>06 / LANGUAGE</span><div class="code-mark" aria-hidden="true">&lt;H&gt;</div><strong>HTML</strong><small data-i18n="tunnel_html">Estrutura e semântica</small></a>
+      <a class="tunnel-card is-language" href="#skills"><span>07 / LANGUAGE</span><div class="code-mark" aria-hidden="true">{ }</div><strong>CSS</strong><small data-i18n="tunnel_css">Estilo e adaptação visual</small></a>
+      <a class="tunnel-card is-language" href="#skills"><span>08 / LANGUAGE</span><div class="code-mark" aria-hidden="true">JS</div><strong>JavaScript</strong><small data-i18n="tunnel_js">Interações e lógica</small></a>
+    </div>
+    <div class="tunnel-progress"><span></span></div>
+    <div class="tunnel-index mono"><span>01</span><i></i><span>05</span></div>
+  </div>
+</section>
 
 <section id="sobre">
   <div class="wrap about-grid">
@@ -520,7 +582,7 @@
       <article class="project-card glass reveal" data-depth=".045">
         <div class="project-top"><span class="project-index">04 / 07</span><span class="project-kind" data-i18n="proj4_kind">Experiência de marca</span></div>
         <div class="project-copy">
-          <h3 data-i18n="proj4_title">AURA Digital Studio — Site comercial</h3>
+          <h3 data-i18n="proj4_title">AURA Software House — Site institucional</h3>
           <p data-i18n="proj4_desc">Site de aquisição para um estúdio digital, com apresentação de serviços, simulador de investimento, prova social e chamadas para conversa. Reúne experiência em copy de conversão, identidade visual, responsividade, animações, SEO e encaminhamento de leads.</p>
           <div class="tag-row"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
           <div class="card-links">
@@ -607,6 +669,7 @@
       hero_h1: 'Explorando o <em>universo da computação</em>, uma linha de código por vez.',
       hero_lede: "Olá, sou Francisco Eudes Ferreira Júnior, graduando em Ciências da Computação pela Estácio e no começo da minha jornada como profissional de TI. Este espaço serve para eu documentar meu progresso até aqui, documentando o que estou aprendendo e projetos que estou participando.",
       btn_ver_projetos: "Ver projetos",
+      tunnel_eyebrow: "PORTFÓLIO · SELEÇÃO", tunnel_title_first: "Projetos em", tunnel_title_second: "movimento.", tunnel_hint: "Role para atravessar a galeria", tunnel_n3: "Plataforma cultural · Pages, D1, R2", tunnel_aura: "Experiência de marca · Web", tunnel_cativa: "Gestão de clínicas · Workers, D1", tunnel_duplo: "Presença digital · SEO local", tunnel_web: "Primeiros experimentos web", tunnel_html:"Estrutura e semântica", tunnel_css:"Estilo e adaptação visual", tunnel_js:"Interações e lógica",
       sobre_label: "Sobre", sobre_title: "Quem está do outro lado do código...",
       sobre_p1: "Minha jornada na tecnologia não começou da forma tradicional. Nos últimos anos, construí uma carreira sólida na operação e direção de imagens para transmissões ao vivo na TV — um ambiente de altíssima pressão onde resolver problemas complexos e agir rápido é a regra. No entanto, movido pela curiosidade e por uma paixão profunda por computação, decidi dar um novo passo e iniciar minha transição de carreira para a computação.",
       sobre_p2: "Atualmente, busco uma oportunidade de estágio na área de tecnologia (desenvolvimento, infraestrutura ou dados). Meu objetivo é integrar um time onde eu possa aprender na prática e contribuir desde o primeiro dia com minha adaptabilidade, visão analítica e capacidade de aprender novos temas rapidamente.",
@@ -638,7 +701,7 @@
       proj2_desc: "Simula um dispositivo de monitoramento para bebês/pets. Desenvolvido em Python, conta com recursos de WebSockets, Google Drive API e MediaRecorder API.",
       proj3_title: "Duplotec — Landing Page",
       proj3_desc: "Site institucional para assistência técnica e acessórios, pensado para apresentar serviços, reforçar confiança e facilitar o contato local. O projeto aprofundou a criação de páginas responsivas, prova social com avaliações e dados estruturados para SEO local.",
-      proj4_title: "AURA Digital Studio — Site comercial",
+      proj4_title: "AURA Software House — Site institucional",
       proj4_desc: "Site de aquisição para um estúdio digital, com apresentação de serviços, simulador de investimento, prova social e chamadas para conversa. Reúne experiência em copy de conversão, identidade visual, responsividade, animações, SEO e encaminhamento de leads.",
       proj5_title: "Cativa — Gestão para clínicas",
       proj5_desc: "Plataforma de gestão para clínicas e salões, com agenda, clientes, prontuário, financeiro, estoque e relacionamento. O trabalho evoluiu para arquitetura full-stack com Cloudflare Workers e D1, controle de acesso, auditoria, proteção de dados sensíveis, backups e fluxos reais de operação.",
@@ -656,6 +719,7 @@
       hero_h1: 'Exploring the <em>universe of computing</em>, one line of code at a time.',
       hero_lede: "Hi, I'm Francisco Eudes Ferreira Júnior, a Computer Science student at Estácio just starting out as an IT professional. This space is where I document my progress, what I'm learning, and the projects I'm working on.",
       btn_ver_projetos: "View projects",
+      tunnel_eyebrow: "PORTFOLIO · SELECTED WORK", tunnel_title_first: "Projects in", tunnel_title_second: "motion.", tunnel_hint: "Scroll to move through the gallery", tunnel_n3: "Cultural platform · Pages, D1, R2", tunnel_aura: "Software development · Web", tunnel_cativa: "Clinic management · Workers, D1", tunnel_duplo: "Digital presence · Local SEO", tunnel_web: "Early web experiments", tunnel_html:"Structure and semantics", tunnel_css:"Styling and responsive design", tunnel_js:"Interactions and logic",
       sobre_label: "About", sobre_title: "Who's behind the code...",
       sobre_p1: "My journey into tech didn't start the traditional way. For the past few years I built a solid career operating and directing live TV broadcasts — a high-pressure environment where solving complex problems fast is the norm. Driven by curiosity and a deep passion for computing, I decided to take a new step and move into a career in technology.",
       sobre_p2: "I'm currently looking for an internship in tech (development, infrastructure, or data). My goal is to join a team where I can learn hands-on and contribute from day one with my adaptability, analytical mindset, and ability to pick up new topics quickly.",
@@ -687,7 +751,7 @@
       proj2_desc: "Simulates a monitoring device for babies/pets. Built with Python, featuring WebSockets, the Google Drive API, and the MediaRecorder API.",
       proj3_title: "Duplotec — Landing Page",
       proj3_desc: "Institutional site for a local phone repair and accessories business, designed to present services, build trust, and make it easy to get in touch. It developed skills in responsive pages, review-based social proof, and structured data for local SEO.",
-      proj4_title: "AURA Digital Studio — Business website",
+      proj4_title: "AURA Software House — Company website",
       proj4_desc: "Lead-generation site for a digital studio, with service details, an investment calculator, social proof, and contact calls to action. It brings together conversion copy, visual identity, responsive design, animation, SEO, and lead routing.",
       proj5_title: "Cativa — Clinic management",
       proj5_desc: "Management platform for clinics and salons, covering scheduling, clients, records, finance, inventory, and customer engagement. The work grew into a full-stack Cloudflare Workers and D1 architecture with access controls, audit logs, sensitive-data protection, backups, and real operational workflows.",
@@ -705,6 +769,7 @@
       hero_h1: 'Explorando el <em>universo de la computación</em>, una línea de código a la vez.',
       hero_lede: "Hola, soy Francisco Eudes Ferreira Júnior, estudiante de Ciencias de la Computación en Estácio y al comienzo de mi camino como profesional de TI. Este espacio es donde documento mi progreso, lo que estoy aprendiendo y los proyectos en los que participo.",
       btn_ver_projetos: "Ver proyectos",
+      tunnel_eyebrow: "PORTAFOLIO · SELECCIÓN", tunnel_title_first: "Proyectos en", tunnel_title_second: "movimiento.", tunnel_hint: "Desplázate para recorrer la galería", tunnel_n3: "Plataforma cultural · Pages, D1, R2", tunnel_aura: "Desarrollo de software · Web", tunnel_cativa: "Gestión de clínicas · Workers, D1", tunnel_duplo: "Presencia digital · SEO local", tunnel_web: "Primeros experimentos web", tunnel_html:"Estructura y semántica", tunnel_css:"Estilo y diseño adaptable", tunnel_js:"Interacciones y lógica",
       sobre_label: "Sobre mí", sobre_title: "Quién está detrás del código...",
       sobre_p1: "Mi camino hacia la tecnología no empezó de forma tradicional. En los últimos años construí una carrera sólida operando y dirigiendo transmisiones de TV en vivo — un entorno de altísima presión donde resolver problemas complejos y actuar rápido es la norma. Movido por la curiosidad y una pasión profunda por la computación, decidí dar un nuevo paso y hacer la transición hacia la tecnología.",
       sobre_p2: "Actualmente busco una oportunidad de prácticas en el área de tecnología (desarrollo, infraestructura o datos). Mi objetivo es integrarme a un equipo donde pueda aprender en la práctica y contribuir desde el primer día con mi adaptabilidad, visión analítica y capacidad de aprender rápido.",
@@ -736,7 +801,7 @@
       proj2_desc: "Simula un dispositivo de monitoreo para bebés/mascotas. Desarrollado en Python, con WebSockets, la API de Google Drive y la API MediaRecorder.",
       proj3_title: "Duplotec — Landing Page",
       proj3_desc: "Sitio institucional para un negocio local de reparación y accesorios, pensado para presentar servicios, generar confianza y facilitar el contacto. El proyecto desarrolló habilidades en páginas adaptables, reseñas como prueba social y datos estructurados para SEO local.",
-      proj4_title: "AURA Digital Studio — Sitio comercial",
+      proj4_title: "AURA Software House — Sitio institucional",
       proj4_desc: "Sitio para captar clientes para un estudio digital, con servicios, simulador de inversión, prueba social y llamadas al contacto. Reúne experiencia en textos de conversión, identidad visual, diseño adaptable, animaciones, SEO y gestión de contactos.",
       proj5_title: "Cativa — Gestión para clínicas",
       proj5_desc: "Plataforma de gestión para clínicas y salones, con agenda, clientes, historiales, finanzas, inventario y relación con clientes. El trabajo evolucionó hacia una arquitectura full-stack con Cloudflare Workers y D1, control de acceso, auditoría, protección de datos sensibles, copias de seguridad y flujos operativos reales.",
@@ -778,21 +843,27 @@
   // padrão: português do Brasil
   applyLanguage('pt');
 
-  // Generative ambient flow inspired by the supplied gateway visualization.
+  // Generative ambient flow field, adapted to the portfolio palette.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const flowCanvas=document.getElementById('flow-canvas');
   const flow=flowCanvas&&flowCanvas.getContext('2d',{alpha:true});
-  if(flow&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    let w=0,h=0,frame=0,t=0,points=[];
-    const colors=['242,184,75','156,143,224','145,200,189'];
-    const resize=()=>{const d=Math.min(devicePixelRatio||1,1.5);w=innerWidth;h=innerHeight;flowCanvas.width=w*d;flowCanvas.height=h*d;flow.setTransform(d,0,0,d,0,0);const n=Math.min(220,Math.round(w*h/7200));points=Array.from({length:n},(_,i)=>({x:Math.random()*w,y:Math.random()*h,p:Math.random()*6.28,s:.25+Math.random()*.35,c:colors[i%3],r:.4+Math.random()*.75}));};
-    const draw=()=>{flow.clearRect(0,0,w,h);for(let i=0;i<points.length;i++){const a=points[i];a.p+=.004*a.s;const ax=a.x+Math.sin(a.p+t*.001)*16, ay=a.y+Math.cos(a.p*.8+t*.0008)*12;flow.fillStyle=`rgba(${a.c},${.12+(Math.sin(a.p)+1)*.09})`;flow.beginPath();flow.arc(ax,ay,a.r,0,6.283);flow.fill();for(let j=i+1;j<Math.min(i+5,points.length);j++){const b=points[j],dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy);if(dist<78){flow.strokeStyle=`rgba(174,177,198,${(1-dist/78)*.045})`;flow.lineWidth=.5;flow.beginPath();flow.moveTo(ax,ay);flow.lineTo(b.x,b.y);flow.stroke();}}}t++;frame=requestAnimationFrame(draw);};
+  if(flow&&!reduceMotion){
+    let w=0,h=0,frame=0,t=0,paths=[],waves=[];
+    const resize=()=>{const d=Math.min(devicePixelRatio||1,1.5);w=innerWidth;h=innerHeight;flowCanvas.width=w*d;flowCanvas.height=h*d;flow.setTransform(d,0,0,d,0,0);const n=Math.min(64,Math.max(28,Math.round(w/18)));paths=Array.from({length:n},(_,i)=>({left:i%2===0,y:(i/n)*h*1.4-h*.2,phase:Math.random()*6.28,speed:.00045+Math.random()*.00055}));};
+    flowCanvas.addEventListener('pointerdown',e=>{waves.push({x:e.clientX,y:e.clientY,r:0,life:1});if(waves.length>4)waves.shift();});
+    const draw=()=>{flow.clearRect(0,0,w,h);const cx=w*.5,cy=h*.53;waves.forEach(a=>{a.r+=3.2;a.life-=.012;});waves=waves.filter(a=>a.life>0);paths.forEach(p=>{p.phase+=p.speed*16;const x0=p.left?0:w,x1=p.left?cx*.5:w-cx*.5,x2=p.left?cx*.82:w-cx*.82;flow.beginPath();flow.moveTo(x0,p.y);flow.bezierCurveTo(x1,p.y+Math.sin(p.phase)*12,x2,cy+Math.cos(p.phase)*30,cx,cy);flow.strokeStyle='rgba(190,185,215,.10)';flow.lineWidth=.75;flow.setLineDash([1,6]);flow.stroke();flow.setLineDash([]);for(let k=0;k<3;k++){const u=(p.phase*.045+k*.34)%1, inv=1-u;let px=inv**3*x0+3*inv**2*u*x1+3*inv*u*u*x2+u**3*cx,py=inv**3*p.y+3*inv**2*u*(p.y+Math.sin(p.phase)*12)+3*inv*u*u*(cy+Math.cos(p.phase)*30)+u**3*cy;waves.forEach(a=>{const d=Math.hypot(px-a.x,py-a.y);if(d>0&&Math.abs(d-a.r)<85){const f=(1-Math.abs(d-a.r)/85)*a.life;px+=(px-a.x)/d*f*46;py+=(py-a.y)/d*f*46;}});flow.beginPath();flow.arc(px,py,1.1,0,Math.PI*2);flow.fillStyle=`rgba(242,184,75,${.2+u*.52})`;flow.fill();}});t++;frame=requestAnimationFrame(draw);};
     resize();draw();addEventListener('resize',resize,{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(frame);else draw();});
   }
 
+  // Wheel-driven 3D project tunnel, while the document keeps native scrolling.
+  const tunnel=document.querySelector('.tunnel-section'), tunnelCards=[...document.querySelectorAll('.tunnel-card')], progressBar=document.querySelector('.tunnel-progress span'), indexLabel=document.querySelector('.tunnel-index span');
+  const updateTunnel=()=>{if(!tunnel)return;const rect=tunnel.getBoundingClientRect(),range=tunnel.offsetHeight-innerHeight,p=Math.max(0,Math.min(1,-rect.top/Math.max(1,range)));tunnelCards.forEach((card,i)=>{const local=(p*1.75-i/(tunnelCards.length-1)*.86+.1),z=(local-.5)*980,angle=i*2.399+p*1.65,rx=Math.cos(angle)*Math.min(innerWidth*.36,450),ry=Math.sin(angle)*Math.min(innerHeight*.3,265),scale=Math.max(.58,1+z/2100);card.style.transform=`translate3d(calc(-50% + ${rx}px),calc(-50% + ${ry}px),${z}px) rotateZ(${Math.sin(angle)*9}deg) scale(${scale})`;card.style.opacity=String(Math.max(0,Math.min(1,(local+.04)*3,(1.04-local)*3)));card.style.zIndex=String(Math.round(1000+z));});if(progressBar)progressBar.style.transform=`scaleX(${p})`;if(indexLabel)indexLabel.textContent=String(Math.min(tunnelCards.length,Math.floor(p*tunnelCards.length)+1)).padStart(2,'0');};
+  let tunnelFrame=0;addEventListener('scroll',()=>{if(!tunnelFrame)tunnelFrame=requestAnimationFrame(()=>{tunnelFrame=0;updateTunnel();});},{passive:true});addEventListener('resize',updateTunnel,{passive:true});updateTunnel();
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)tunnelCards.forEach((card,i)=>{card.style.transform=`translate(calc(-50% + ${(i-2)*130}px),-50%) scale(.75)`;card.style.opacity='.8';});
+
   // Single animated background layer with gentle pointer parallax.
   const blobs = document.querySelectorAll('.blob');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (!reduceMotion && finePointer){
     let pointerFrame = 0;
     window.addEventListener('pointermove', (e) => {
