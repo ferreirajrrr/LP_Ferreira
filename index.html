@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ferreira Júnior — Portfólio</title>
+<title>Francisco Eudes Ferreira Júnior — Portfólio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -21,11 +21,13 @@
     --violet: #9C8FE0;
     --glow-gold: rgba(242,184,75,0.30);
     --glow-violet: rgba(156,143,224,0.28);
-    --max-w: 1000px;
+    --max-w: 1160px;
+    --ease-out: cubic-bezier(.16,1,.3,1);
   }
 
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  ::selection{ background:rgba(242,184,75,.28); color:var(--text); }
 
   body{
     margin:0;
@@ -54,7 +56,8 @@
   .wrap{ max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
 
   /* ---------- ambient glow blobs ---------- */
-  .glow-field{ position: fixed; inset:0; z-index:-2; overflow:hidden; }
+  .glow-field{position:fixed;inset:0;z-index:-2;overflow:hidden;}
+  #flow-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.38;pointer-events:none;}
   .blob{
     position:absolute; border-radius:50%;
     filter: blur(90px);
@@ -88,7 +91,8 @@
     padding: 14px 22px;
   }
   nav .brand{ font-family:'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight:600; }
-  nav .brand span{ color: var(--gold); }
+  nav .brand .brand-first{color:var(--violet);}
+  nav .brand .brand-last{color:var(--gold);}
   nav .nav-right{ display:flex; align-items:center; gap: 26px; }
   nav ul{ list-style:none; display:flex; gap: 26px; margin:0; padding:0; font-size: 0.88rem; }
   nav ul a { color: var(--text-muted); }
@@ -111,25 +115,25 @@
   .lang-btn.active{ color: var(--gold); border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
 
   /* ---------- Hero ---------- */
-  .hero{ position: relative; padding: 120px 0 100px; }
+  .hero{ position: relative; padding: clamp(84px,11vw,148px) 0 108px; isolation:isolate; }
+  .hero::before{ content:""; position:absolute; z-index:-1; width:min(64vw,760px); aspect-ratio:1; top:-18%; right:-19%; border-radius:50%; background:radial-gradient(circle,rgba(242,184,75,.11),rgba(156,143,224,.07) 38%,transparent 70%); filter:blur(10px); pointer-events:none; }
   .hero .wrap{ position: relative; display:grid; grid-template-columns: 1.3fr 0.9fr; gap: 48px; align-items:center; }
   .eyebrow-pill{
     display:inline-flex; align-items:center; gap:8px;
     padding: 8px 16px; margin-bottom: 26px;
   }
   .hero h1{
-    font-size: clamp(2.3rem, 5.2vw, 3.6rem);
+    font-size: clamp(2.8rem, 7.2vw, 5.5rem);
     max-width: 780px;
-    line-height: 1.12;
+    line-height: 1.02;
+    letter-spacing:-.055em;
   }
   .hero h1 em{ color: var(--gold); font-style: normal; }
   .hero p.lede{ margin-top: 22px; max-width: 560px; color: var(--text-muted); font-size: 1.05rem; }
   .hero .cta-row{ margin-top: 34px; display:flex; gap:16px; flex-wrap: wrap; }
 
-  .photo-window{
-    padding: 10px;
-    animation: float 7s ease-in-out infinite;
-  }
+  .photo-window{ padding: 10px; position:relative; transform:rotate(2deg); box-shadow:0 30px 90px rgba(0,0,0,.45); }
+  .photo-window::after{content:""; position:absolute; z-index:-1; inset:18% -10% -8% 18%; border:1px solid rgba(242,184,75,.35); border-radius:inherit; transform:translateZ(-1px);}
   .photo-window .window-bar{ margin: -10px -10px 10px; }
   .photo-window img{
     width: 100%;
@@ -143,21 +147,26 @@
     .hero .wrap{ grid-template-columns: 1fr; }
     .photo-window{ max-width: 280px; margin: 0 auto; order: -1; }
   }
-  .btn{ display:inline-block; padding: 13px 24px; border-radius: 100px; font-size: 0.9rem; font-weight: 500; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+  .btn{ display:inline-block; padding: 13px 24px; border-radius: 100px; font-size: 0.9rem; font-weight: 500; transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease, background .3s ease; }
   .btn-solid{ background: var(--gold); color: #08090C; box-shadow: 0 0 0 rgba(242,184,75,0); }
   .btn-solid:hover{ text-decoration:none; transform: translateY(-2px); box-shadow: 0 10px 30px var(--glow-gold); }
   .btn-outline{ color: var(--text); }
   .btn-outline:hover{ text-decoration:none; transform: translateY(-2px); border-color: var(--gold); color: var(--gold); }
 
-  /* reveal-on-scroll */
-  .reveal{ opacity:0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.in{ opacity:1; transform: translateY(0); }
+  /* Scroll entrances keep content readable when motion is reduced. */
+  .reveal{ opacity:0; transform:translate3d(0,30px,0); transition:opacity .85s var(--ease-out),transform .85s var(--ease-out); }
+  .reveal.in{ opacity:1; transform:translate3d(0,0,0); }
+  .hero-copy > *{opacity:0; animation:hero-rise .85s var(--ease-out) forwards;}
+  .hero-copy > :nth-child(1){animation-delay:.12s}.hero-copy > :nth-child(2){animation-delay:.22s}.hero-copy > :nth-child(3){animation-delay:.34s}.hero-copy > :nth-child(4){animation-delay:.46s}
+  .photo-window{opacity:0; animation:photo-arrive 1.15s .32s var(--ease-out) forwards;}
+  @keyframes hero-rise{from{opacity:0;transform:translateY(26px);filter:blur(7px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+  @keyframes photo-arrive{from{opacity:0;transform:translate3d(34px,20px,0) rotate(7deg);filter:blur(8px)}to{opacity:1;transform:translate3d(0,0,0) rotate(2deg);filter:blur(0)}}
 
   /* ---------- Sections ---------- */
   section{ padding: 70px 0; position: relative; }
-  .section-head{ margin-bottom: 40px; max-width: 620px; }
+  .section-head{ margin-bottom: 44px; max-width: 740px; }
   .section-head .mono{ display:block; margin-bottom: 12px; }
-  .section-head h2{ font-size: clamp(1.5rem, 3vw, 2rem); }
+  .section-head h2{ font-size: clamp(2rem, 4.6vw, 3.25rem); line-height:1.05; letter-spacing:-.045em; }
   .section-head p{ color: var(--text-muted); margin-top: 12px; }
 
   /* ---------- Sobre ---------- */
@@ -174,64 +183,82 @@
   .flag-inline img{ display:block; border-radius:2px; box-shadow: 0 0 0 1px var(--glass-border); }
 
   /* ---------- Skills / Constellation ---------- */
-  .const-panel{ padding: 34px; }
-  .constellation-wrap svg{ width: 100%; height: auto; display:block; }
+  .const-panel{padding:34px;}
+  .constellation-wrap{display:block;}
+  .constellation-wrap svg{width:100%;height:310px;display:block;min-height:0;}
+  .skill-constellation{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:10px;}
+  .skill-group{padding:18px;border:1px solid var(--glass-border);border-radius:14px;background:rgba(255,255,255,.025);}
+  .skill-group h3{font-size:.92rem;margin-bottom:12px;}
+  .skill-list{display:flex;flex-wrap:wrap;gap:7px;}
+  .skill-chip{padding:6px 9px;border-radius:8px;background:rgba(255,255,255,.05);color:#c7c9d2;font: .68rem 'JetBrains Mono',monospace;}
   .const-line{ stroke: rgba(255,255,255,0.12); stroke-width: 1; }
   .const-dot{ fill: var(--gold); }
   .const-dot.learning{ fill: var(--violet); }
   .const-label{ font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: var(--text-muted); }
-  .const-legend{ display:flex; gap: 28px; margin-top: 22px; font-size: 0.82rem; color: var(--text-muted); }
+  .const-side{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:22px;padding-top:22px;border-top:1px solid var(--glass-border);}
+  .const-side h3{font-size:1.02rem;}
+  .const-side p{margin:7px 0 0;color:var(--text-muted);font-size:.82rem;line-height:1.6;}
+  .const-legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:0;font-size:.78rem;color:var(--text-muted);}
   .const-legend span{ display:inline-flex; align-items:center; gap:8px; }
   .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; }
   .dot.g{ background: var(--gold); }
   .dot.v{ background: var(--violet); }
 
-  /* ---------- Projects — floating windows ---------- */
-  .project-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 26px; }
-  .window{
-    padding: 0;
-    overflow: hidden;
-    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-    animation: float 6s ease-in-out infinite;
-  }
-  .window:nth-child(2){ animation-delay: -1.5s; }
-  .window:nth-child(3){ animation-delay: -3s; }
-  .window:nth-child(4){ animation-delay: -4.5s; }
-  @keyframes float{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-8px);} }
-  .window:hover{
-    transform: translateY(-10px) scale(1.015);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--glass-border);
-    border-color: rgba(242,184,75,0.35);
-  }
-  .window-bar{
-    display:flex; align-items:center; gap: 8px;
-    padding: 12px 16px;
-    background: rgba(255,255,255,0.03);
-    border-bottom: 1px solid var(--glass-border);
-  }
-  .traffic{ width:10px; height:10px; border-radius:50%; }
-  .traffic.r{ background:#FF5F57; }
-  .traffic.y{ background:#FEBC2E; }
-  .traffic.g{ background:#28C840; }
-  .window-bar .win-title{ margin-left: 8px; font-family:'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
-  .window-body{ padding: 22px; display:flex; flex-direction:column; gap:14px; }
-  .window-body h3{ font-size: 1.1rem; }
-  .window-body p{ color: var(--text-muted); font-size: 0.93rem; margin:0; }
-  .tag-row{ display:flex; flex-wrap:wrap; gap: 8px; }
-  .tag{ font-family:'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-muted); border: 1px solid var(--glass-border); padding: 3px 10px; border-radius: 100px; }
-  .card-links{ display:flex; gap:18px; font-size: 0.86rem; }
+  /* ---------- Projects — editorial showcase ---------- */
+  #projetos{overflow:clip;}
+  .project-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;perspective:1200px;}
+  .project-card{--card-accent:var(--gold);--card-rgb:242,184,75;position:relative;isolation:isolate;grid-column:span 6;min-height:0;padding:24px;display:flex;flex-direction:column;overflow:hidden;border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018) 58%),radial-gradient(ellipse at 90% 0%,rgba(var(--card-rgb),.13),transparent 48%);border:1px solid rgba(255,255,255,.095);box-shadow:0 18px 60px rgba(0,0,0,.18);transform-style:preserve-3d;transition:transform .65s var(--ease-out),border-color .45s ease,box-shadow .45s ease;}
+  .project-card:nth-child(4n+2){--card-accent:var(--violet);--card-rgb:156,143,224;}
+  .project-card:nth-child(4n+3){--card-accent:#91c8bd;--card-rgb:101,187,170;}
+  .project-card:nth-child(4n){--card-accent:#f08f72;--card-rgb:240,143,114;}
+  .project-card:nth-child(3n+2){transform:translateY(30px);}
+  .project-card::before{content:"";position:absolute;z-index:-1;width:270px;aspect-ratio:1;right:-78px;top:35px;border:1px solid rgba(var(--card-rgb),.19);border-radius:50%;box-shadow:0 0 0 32px rgba(var(--card-rgb),.025),0 0 0 68px rgba(var(--card-rgb),.018);transition:transform .8s var(--ease-out),opacity .4s ease;}
+  .project-card::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(118deg,transparent 28%,rgba(255,255,255,.055) 48%,transparent 68%);transform:translateX(-120%);transition:transform 1s var(--ease-out);pointer-events:none;}
+  .project-card:hover{transform:translateY(-8px) rotateX(1deg);border-color:rgba(var(--card-rgb),.45);box-shadow:0 32px 80px rgba(0,0,0,.38),0 0 35px rgba(var(--card-rgb),.07);}
+  .project-card:hover::before{transform:scale(1.12) translate(-8px,-8px);}
+  .project-card:hover::after{transform:translateX(120%);}
+  .project-top{display:flex;justify-content:space-between;align-items:center;gap:14px;}
+  .project-index,.project-kind{font:500 .7rem 'JetBrains Mono',monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);}
+  .project-index{color:var(--card-accent);}
+  .project-kind{padding:7px 10px;border:1px solid rgba(255,255,255,.11);border-radius:99px;background:rgba(0,0,0,.13);}
+  .project-copy{position:relative;max-width:500px;margin-top:30px;transform:translateZ(20px);}
+  .project-copy h3{font-size:clamp(1.55rem,3vw,2.05rem);line-height:1.08;letter-spacing:-.04em;max-width:440px;}
+  .project-copy p{margin:13px 0 0;color:#b8bac5;font-size:.92rem;line-height:1.7;}
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+  .tag{font:500 .67rem 'JetBrains Mono',monospace;color:#c5c5ce;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.14);padding:5px 10px;border-radius:100px;}
+  .card-links{display:flex;gap:20px;margin-top:22px;font-size:.85rem;}
+  .card-links a{display:inline-flex;align-items:center;gap:7px;color:var(--card-accent);font-weight:600;transition:gap .25s ease,color .25s ease;}
+  .card-links a:hover{gap:12px;text-decoration:none;color:#fff;}
+  .card-links a::after{content:'↗';font-size:1rem;}
+  .project-card.reveal{transform:translate3d(0,38px,0) rotateX(3deg);}
+  .project-card.reveal.in{transform:translate3d(0,0,0) rotateX(0);}
+  .project-card:nth-child(3n+2).reveal.in{transform:translateY(20px);}
+  .project-card.reveal:hover{transform:translateY(-8px) rotateX(1deg);}
+  .project-card:nth-child(3n+2).reveal:hover{transform:translateY(10px) rotateX(1deg);}
+  .const-panel{position:relative;overflow:hidden;}
+  .constellation-wrap svg{overflow:visible;}
+  .const-line{stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset 1.6s var(--ease-out);}
+  .const-panel.in .const-line{stroke-dashoffset:0;}
+  .const-dot{transform-box:fill-box;transform-origin:center;opacity:.35;transition:transform .6s var(--ease-out),opacity .6s ease;}
+  .const-panel.in .const-dot{transform:scale(1.3);opacity:1;}
+  .const-panel.in .const-dot:nth-of-type(2n){transition-delay:.2s;}
+  .const-label{opacity:.45;transition:opacity .7s ease .3s;}
+  .const-panel.in .const-label{opacity:1;}
 
   @media (prefers-reduced-motion: reduce){
-    .window{ animation: none; }
     .blob{ animation: none; }
     .reveal{ transition:none; opacity:1; transform:none; }
+    .hero-copy > *, .photo-window{animation:none;opacity:1;filter:none;transform:none;}
+    .const-line{stroke-dashoffset:0;transition:none}.const-dot,.const-label{opacity:1;transition:none;transform:none;}
+    .project-card,.project-card:nth-child(3n+2),.project-card.reveal,.project-card:nth-child(3n+2).reveal.in{transform:none;transition:none;}
+    .project-card::after{display:none;}
   }
 
   /* ---------- Contato — ícones sociais ---------- */
-  .contact-box{ padding: 46px; display:flex; justify-content:center; align-items:center; }
-  .social-links{ display:flex; gap: 26px; align-items:center; }
+  .contact-box{padding:22px 26px;display:flex;justify-content:center;align-items:center;min-height:0;}
+  .social-links{display:flex;gap:18px;align-items:center;}
   .social-icon{
-    width: 58px; height: 58px;
+    width: 48px; height: 48px;
     border-radius: 50%;
     display:flex; align-items:center; justify-content:center;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
@@ -245,7 +272,8 @@
   }
   .social-icon:hover svg{ fill: var(--gold); }
 
-  footer{ padding: 36px 0 50px; text-align:center; color: var(--text-muted); font-size: 0.8rem; }
+  footer{padding:14px 0 20px;text-align:center;color:var(--text-muted);font-size:.76rem;}
+  #contato{padding:38px 0 10px;}
 
   /* ---------- WhatsApp floating button ---------- */
   .whats-btn{
@@ -277,21 +305,25 @@
     nav .bar{ flex-wrap: wrap; gap: 12px; }
     nav .nav-right{ gap: 16px; }
     nav ul{ gap: 14px; font-size: 0.78rem; }
-    .window{ animation: none; }
+    .project-grid{gap:14px;}
+    .project-card{grid-column:span 12;min-height:340px;padding:23px;border-radius:19px;}
+    .project-card:nth-child(3n+2).reveal.in{transform:none;}
+    .skill-constellation{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .const-side{grid-template-columns:1fr;}
+    .project-copy{margin-top:66px;}
+    .hero{padding-top:76px;}
+    .photo-window{max-width:240px;}
   }
+  @media (max-width:480px){nav{padding:0 14px}nav .bar{padding:12px 14px}.wrap{padding:0 18px}.hero .wrap{gap:36px}.hero h1{font-size:clamp(2.55rem,13vw,4rem)}.const-panel{padding:18px 14px}.constellation-wrap svg{height:220px}.const-label{font-size:14px}.skill-constellation{grid-template-columns:1fr}.const-legend{gap:12px;flex-wrap:wrap}.project-card{min-height:360px}.whats-btn{right:18px;bottom:18px}.contact-box{padding:16px}.social-links{gap:14px}.social-icon{width:44px;height:44px}#contato{padding-top:28px;padding-bottom:4px}footer{padding:10px 0 14px}}
 </style>
 </head>
 <body>
 
-<div class="glow-field" aria-hidden="true">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
-</div>
+<div class="glow-field" aria-hidden="true"><canvas id="flow-canvas"></canvas></div>
 
 <nav>
   <div class="bar glass">
-    <div class="brand">Ferreira <span>Júnior</span></div>
+    <div class="brand"><span class="brand-first">Francisco Eudes</span> <span class="brand-last">Ferreira Júnior</span></div>
     <div class="nav-right">
       <ul>
         <li><a href="#sobre" data-i18n="nav_sobre">Sobre</a></li>
@@ -310,11 +342,11 @@
 
 <header class="hero">
   <div class="wrap">
-    <div>
+    <div class="hero-copy">
       <span class="eyebrow-pill glass mono" data-i18n="hero_eyebrow">// dev iniciante · ciências da computação</span>
       <h1 data-i18n="hero_h1" data-i18n-html>Explorando o <em>universo da computação</em>, uma linha de código por vez.</h1>
       <p class="lede" data-i18n="hero_lede">
-        Olá, sou Ferreira Júnior, graduando em Ciências da Computação pela Estácio e no começo
+        Olá, sou Francisco Eudes Ferreira Júnior, graduando em Ciências da Computação pela Estácio e no começo
         da minha jornada como profissional de TI. Este espaço serve para eu documentar meu progresso até aqui, 
         documentando o que estou aprendendo e projetos que estou participando.
       </p>
@@ -324,11 +356,7 @@
       </div>
     </div>
     <div class="photo-window glass">
-      <div class="window-bar">
-        <span class="traffic r"></span><span class="traffic y"></span><span class="traffic g"></span>
-        <span class="win-title">ferreira-junior.png</span>
-      </div>
-      <img src="assets/foto-perfil.png" alt="Foto de Ferreira Júnior">
+      <img src="assets/foto-perfil.png" alt="Foto de Francisco Eudes Ferreira Júnior">
     </div>
   </div>
 </header>
@@ -369,7 +397,7 @@
     <div class="section-head reveal">
       <span class="mono" data-i18n="skills_label">Skills</span>
       <h2 data-i18n="skills_title">Mapa de habilidades</h2>
-      <p data-i18n="skills_p">Cada estrela é uma tecnologia — as douradas já foram estudadas, as violeta estão em estudo agora. A IA generativa também faz parte do processo: uso como apoio para aprender mais rápido e prototipar os projetos.</p>
+      <p data-i18n="skills_p">O mapa relaciona os fundamentos que aplico nos projetos às tecnologias que estou explorando. As conexões mostram como essas áreas se combinam na construção de interfaces e produtos digitais.</p>
     </div>
     <div class="const-panel glass reveal">
       <div class="constellation-wrap">
@@ -381,6 +409,10 @@
           <line class="const-line" x1="520" y1="120" x2="650" y2="70"/>
           <line class="const-line" x1="520" y1="120" x2="600" y2="200"/>
           <line class="const-line" x1="380" y1="60" x2="440" y2="150"/>
+          <line class="const-line" x1="360" y1="210" x2="520" y2="180"/>
+          <line class="const-line" x1="650" y1="70" x2="520" y2="180"/>
+          <line class="const-line" x1="230" y1="140" x2="150" y2="220"/>
+          <line class="const-line" x1="380" y1="60" x2="260" y2="40"/>
 
           <circle class="const-dot" cx="90" cy="70" r="5"/>
           <text class="const-label" x="75" y="50">HTML</text>
@@ -405,11 +437,36 @@
 
           <circle class="const-dot learning" cx="600" cy="200" r="4.5"/>
           <text class="const-label" x="590" y="224">PHP</text>
+
+          <circle class="const-dot learning" cx="520" cy="180" r="4.5"/>
+          <text class="const-label" x="493" y="205">APIs</text>
+          <circle class="const-dot learning" cx="150" cy="220" r="4.5"/><text class="const-label" x="115" y="245">Acessibilidade</text>
+          <circle class="const-dot" cx="260" cy="40" r="4.5"/><text class="const-label" x="238" y="25">Git</text>
         </svg>
-        <div class="const-legend">
-          <span><i class="dot g"></i> <span data-i18n="legend_estudou">Já estudou</span></span>
-          <span><i class="dot v"></i> <span data-i18n="legend_estudando">Estudando agora</span></span>
+        <div class="skill-constellation">
+          <div class="skill-group"><h3 data-i18n="skill_group_frontend">Interface</h3><div class="skill-list"><span class="skill-chip">HTML5</span><span class="skill-chip">CSS3</span><span class="skill-chip">JavaScript</span><span class="skill-chip">SVG</span><span class="skill-chip">Responsive UI</span><span class="skill-chip">PWA</span></div></div>
+          <div class="skill-group"><h3 data-i18n="skill_group_backend">Backend & APIs</h3><div class="skill-list"><span class="skill-chip">Cloudflare Workers</span><span class="skill-chip">REST APIs</span><span class="skill-chip">WebSockets</span><span class="skill-chip">Python</span><span class="skill-chip">PHP</span></div></div>
+          <div class="skill-group"><h3 data-i18n="skill_group_data">Dados & segurança</h3><div class="skill-list"><span class="skill-chip">SQL</span><span class="skill-chip">D1 / SQLite</span><span class="skill-chip">R2</span><span class="skill-chip">AES-GCM</span><span class="skill-chip">PBKDF2</span><span class="skill-chip">Auditoria</span></div></div>
+          <div class="skill-group"><h3 data-i18n="skill_group_practice">Produto & entrega</h3><div class="skill-list"><span class="skill-chip">Git / GitHub</span><span class="skill-chip">Cloudflare Pages</span><span class="skill-chip">SEO</span><span class="skill-chip">Acessibilidade</span><span class="skill-chip">PWA</span><span class="skill-chip">Integrações</span></div></div>
         </div>
+        <aside class="const-side">
+          <div>
+            <h3 data-i18n="skills_foundation_title">Interface & experiência</h3>
+            <p data-i18n="skills_foundation_desc">HTML semântico, CSS responsivo e JavaScript formam a base de sites, catálogos, painéis e ferramentas interativas. Também há prática com SVG, acessibilidade, SEO, animações e PWA.</p>
+          </div>
+          <div>
+            <h3 data-i18n="skills_expanding_title">Serviços, dados & operação</h3>
+            <p data-i18n="skills_expanding_desc">Projetos utilizam Workers, APIs REST e WebSockets, SQL/D1 e SQLite, armazenamento R2, integrações de mídia e automações. Segurança, autenticação, auditoria, criptografia e backups entram nos sistemas de negócio.</p>
+          </div>
+          <div>
+            <h3 data-i18n="skills_tools_title">Ferramentas & integrações</h3>
+            <p data-i18n="skills_tools_desc">Git e GitHub, Cloudflare Pages e Workers, Google Drive, MediaRecorder, Leaflet/OpenStreetMap, Mercado Pago e ferramentas de IA aparecem ao longo dos projetos.</p>
+          </div>
+          <div class="const-legend">
+            <span><i class="dot g"></i> <span data-i18n="legend_estudou">Já estudou</span></span>
+            <span><i class="dot v"></i> <span data-i18n="legend_estudando">Estudando agora</span></span>
+          </div>
+        </aside>
       </div>
     </div>
   </div>
@@ -420,73 +477,94 @@
     <div class="section-head reveal">
       <span class="mono" data-i18n="projetos_label">Projetos</span>
       <h2 data-i18n="projetos_title">O que já construí</h2>
-      <p data-i18n="projetos_p">Alguns projetos testes feitos todos com consulta de IA e codados no VS Code.</p>
+      <p data-i18n="projetos_p">Uma trajetória prática que começou com exercícios web e avançou para produtos digitais completos, sistemas de gestão e soluções implantadas para negócios reais.</p>
     </div>
     <div class="project-grid">
 
-      <div class="window glass reveal">
-        <div class="window-bar">
-          <span class="traffic r"></span><span class="traffic y"></span><span class="traffic g"></span>
-          <span class="win-title" data-i18n="proj1_title">Linguagens de Programação - Alura</span>
-        </div>
-        <div class="window-body">
-          <h3>linguagens-dev</h3>
-          <p data-i18n="proj1_desc">Trabalho feito pra conclusão de um workshop oferecido pela Alura, nele aprendemos a usar o Gemini na criação de aplicações web.</p>
+      <article class="project-card glass reveal" data-depth=".035">
+        <div class="project-top"><span class="project-index">01 / 07</span><span class="project-kind" data-i18n="proj1_kind">Experimento web</span></div>
+        <div class="project-copy">
+          <h3 data-i18n="proj1_title">Linguagens de Programação - Alura</h3>
+          <p data-i18n="proj1_desc">Projeto de conclusão de workshop da Alura: uma aplicação web criada com apoio do Gemini. Foi um dos primeiros exercícios para transformar um briefing em interface, estruturar HTML e CSS e adicionar comportamento com JavaScript.</p>
           <div class="tag-row"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
           <div class="card-links">
-            <a href="https://github.com/ferreirajrrr/linguagens-dev.git" data-i18n="link_code">Código ↗</a>
-            <a href="https://ferreirajrrr.github.io/linguagens-dev/">Demo ↗</a>
+            <a href="https://ferreirajrrr.github.io/linguagens-dev/" data-i18n="link_demo">Ver projeto</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="window glass reveal">
-        <div class="window-bar">
-          <span class="traffic r"></span><span class="traffic y"></span><span class="traffic g"></span>
-          <span class="win-title" data-i18n="proj2_title">Babá Eletrônica</span>
-        </div>
-        <div class="window-body">
-          <h3>baba-eletronica</h3>
+      <article class="project-card glass reveal" data-depth=".05">
+        <div class="project-top"><span class="project-index">02 / 07</span><span class="project-kind" data-i18n="proj2_kind">Aplicação interativa</span></div>
+        <div class="project-copy">
+          <h3 data-i18n="proj2_title">Babá Eletrônica</h3>
           <p data-i18n="proj2_desc">Simula um dispositivo de monitoramento para bebês/pets. Desenvolvido em Python, conta com recursos de WebSockets, Google Drive API e MediaRecorder API. </p>
-          <div class="tag-row"><span class="tag">[tecnologia]</span></div>
+          <div class="tag-row"><span class="tag">Python</span><span class="tag">WebSockets</span><span class="tag">Google Drive API</span><span class="tag">MediaRecorder API</span></div>
           <div class="card-links">
-            <a href="https://github.com/ferreirajrrr/.testeJr.git" data-i18n="link_code">Código ↗</a>
-            <a href="https://testejr.onrender.com/">Demo ↗</a>
+            <a href="https://testejr.onrender.com/" data-i18n="link_demo">Ver projeto</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="window glass reveal">
-        <div class="window-bar">
-          <span class="traffic r"></span><span class="traffic y"></span><span class="traffic g"></span>
-          <span class="win-title" data-i18n="proj3_title">Duplotec — Landing Page</span>
-        </div>
-        <div class="window-body">
-          <h3>.duplotec</h3>
-          <p data-i18n="proj3_desc">[Edite aqui] Descreva em 1-2 frases o que este projeto faz e qual problema ele resolve.</p>
+      <article class="project-card glass reveal" data-depth=".025">
+        <div class="project-top"><span class="project-index">03 / 07</span><span class="project-kind" data-i18n="proj3_kind">Presença digital</span></div>
+        <div class="project-copy">
+          <h3 data-i18n="proj3_title">Duplotec — Landing Page</h3>
+          <p data-i18n="proj3_desc">Site institucional para assistência técnica e acessórios, pensado para apresentar serviços, reforçar confiança e facilitar o contato local. O projeto aprofundou a criação de páginas responsivas, prova social com avaliações e dados estruturados para SEO local.</p>
           <div class="tag-row"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
           <div class="card-links">
-            <a href="https://github.com/ferreirajrrr/.duplotec" data-i18n="link_code">Código ↗</a>
-            <a href="#">Demo ↗</a>
+            <a href="https://duplotec.com.br/" data-i18n="link_demo">Ver projeto</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="window glass reveal">
-        <div class="window-bar">
-          <span class="traffic r"></span><span class="traffic y"></span><span class="traffic g"></span>
-          <span class="win-title" data-i18n="proj4_title">AURA Digital Studio — Landing Page</span>
-        </div>
-        <div class="window-body">
-          <h3>lp-home</h3>
-          <p data-i18n="proj4_desc">[Edite aqui] Descreva em 1-2 frases o que este projeto faz e qual problema ele resolve.</p>
+      <article class="project-card glass reveal" data-depth=".045">
+        <div class="project-top"><span class="project-index">04 / 07</span><span class="project-kind" data-i18n="proj4_kind">Experiência de marca</span></div>
+        <div class="project-copy">
+          <h3 data-i18n="proj4_title">AURA Digital Studio — Site comercial</h3>
+          <p data-i18n="proj4_desc">Site de aquisição para um estúdio digital, com apresentação de serviços, simulador de investimento, prova social e chamadas para conversa. Reúne experiência em copy de conversão, identidade visual, responsividade, animações, SEO e encaminhamento de leads.</p>
           <div class="tag-row"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
           <div class="card-links">
-            <a href="https://github.com/ferreirajrrr/lp-home" data-i18n="link_code">Código ↗</a>
-            <a href="#">Demo ↗</a>
+            <a href="https://auradigital.studio/" data-i18n="link_demo">Ver projeto</a>
           </div>
         </div>
-      </div>
+      </article>
+
+      <article class="project-card glass reveal" data-depth=".035">
+        <div class="project-top"><span class="project-index">05 / 07</span><span class="project-kind" data-i18n="proj5_kind">Produto digital</span></div>
+        <div class="project-copy">
+          <h3 data-i18n="proj5_title">Cativa — Gestão para clínicas</h3>
+          <p data-i18n="proj5_desc">Plataforma de gestão para clínicas e salões, com agenda, clientes, prontuário, financeiro, estoque e relacionamento. O trabalho evoluiu para arquitetura full-stack com Cloudflare Workers e D1, controle de acesso, auditoria, proteção de dados sensíveis, backups e fluxos reais de operação.</p>
+          <div class="tag-row"><span class="tag">JavaScript</span><span class="tag">Cloudflare Workers</span><span class="tag">D1 / SQL</span><span class="tag">Segurança</span></div>
+          <div class="card-links">
+            <a href="https://cativa.auralandingpages.com.br/manual">Visão geral ↗</a>
+            <a href="https://cativa.auralandingpages.com.br/" data-i18n="link_demo">Ver projeto</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card glass reveal" data-depth=".05">
+        <div class="project-top"><span class="project-index">06 / 07</span><span class="project-kind" data-i18n="proj6_kind">Sistema de gestão</span></div>
+        <div class="project-copy">
+          <h3 data-i18n="proj6_title">Pinheiro Locações — Sistema de gestão</h3>
+          <p data-i18n="proj6_desc">Sistema mobile-first para administrar uma locadora de equipamentos: disponibilidade e reservas, contratos e cobranças, manutenção e indicadores financeiros. O projeto desenvolveu experiência em modelagem de regras de negócio, persistência, privacidade LGPD, documentos operacionais, backups e implantação em produção.</p>
+          <div class="tag-row"><span class="tag">JavaScript</span><span class="tag">Cloudflare Workers</span><span class="tag">D1 / R2</span><span class="tag">PWA</span></div>
+          <div class="card-links">
+            <a href="https://github.com/ferreirajrrr" data-i18n="link_learn_more">Saiba mais</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card glass reveal" data-depth=".025">
+        <div class="project-top"><span class="project-index">07 / 07</span><span class="project-kind" data-i18n="proj7_kind">Plataforma de conteúdo</span></div>
+        <div class="project-copy">
+          <h3 data-i18n="proj7_title">N3 Produções — Portfólio cultural</h3>
+          <p data-i18n="proj7_desc">Plataforma para apresentar projetos culturais e publicações, com painel administrativo para manter o catálogo atualizado. O escopo ampliou a experiência em aplicações orientadas a conteúdo, APIs, banco D1, armazenamento R2 e publicação com Cloudflare Pages.</p>
+          <div class="tag-row"><span class="tag">JavaScript</span><span class="tag">Cloudflare Pages</span><span class="tag">D1</span><span class="tag">R2</span></div>
+          <div class="card-links">
+            <a href="https://n3producoes.pages.dev/" data-i18n="link_demo">Ver projeto</a>
+          </div>
+        </div>
+      </article>
 
     </div>
   </div>
@@ -527,7 +605,7 @@
       nav_sobre: "Sobre", nav_skills: "Skills", nav_projetos: "Projetos", nav_contato: "Contato",
       hero_eyebrow: "// dev iniciante · ciências da computação",
       hero_h1: 'Explorando o <em>universo da computação</em>, uma linha de código por vez.',
-      hero_lede: "Olá, sou Ferreira Júnior, graduando em Ciências da Computação pela Estácio e no começo da minha jornada como profissional de TI. Este espaço serve para eu documentar meu progresso até aqui, documentando o que estou aprendendo e projetos que estou participando.",
+      hero_lede: "Olá, sou Francisco Eudes Ferreira Júnior, graduando em Ciências da Computação pela Estácio e no começo da minha jornada como profissional de TI. Este espaço serve para eu documentar meu progresso até aqui, documentando o que estou aprendendo e projetos que estou participando.",
       btn_ver_projetos: "Ver projetos",
       sobre_label: "Sobre", sobre_title: "Quem está do outro lado do código...",
       sobre_p1: "Minha jornada na tecnologia não começou da forma tradicional. Nos últimos anos, construí uma carreira sólida na operação e direção de imagens para transmissões ao vivo na TV — um ambiente de altíssima pressão onde resolver problemas complexos e agir rápido é a regra. No entanto, movido pela curiosidade e por uma paixão profunda por computação, decidi dar um novo passo e iniciar minha transição de carreira para a computação.",
@@ -538,20 +616,37 @@
       fact_ia_label: "Uso de IA", fact_ia_value: "Desenvolvimento de projetos/códigos",
       fact_disponivel_label: "Disponível para", fact_disponivel_value: "Estágio",
       skills_label: "Skills", skills_title: "Mapa de habilidades",
-      skills_p: "Cada estrela é uma tecnologia — as douradas já foram estudadas, as violeta estão em estudo agora. A IA generativa também faz parte do processo: uso como apoio para aprender mais rápido e prototipar os projetos.",
+      skills_p: "O mapa relaciona os fundamentos que aplico nos projetos às tecnologias que estou explorando. As conexões mostram como essas áreas se combinam na construção de interfaces e produtos digitais.",
+      skills_foundation_title: "Interface & experiência",
+      skills_foundation_desc: "HTML semântico, CSS responsivo e JavaScript formam a base de sites, catálogos, painéis e ferramentas interativas. Também há prática com SVG, acessibilidade, SEO, animações e PWA.",
+      skills_expanding_title: "Serviços, dados & operação",
+      skills_expanding_desc: "Projetos utilizam Workers, APIs REST e WebSockets, SQL/D1 e SQLite, armazenamento R2, integrações de mídia e automações. Segurança, autenticação, auditoria, criptografia e backups entram nos sistemas de negócio.",
+      skills_tools_title: "Ferramentas & integrações",
+      skills_tools_desc: "Git e GitHub, Cloudflare Pages e Workers, Google Drive, MediaRecorder, Leaflet/OpenStreetMap, Mercado Pago e ferramentas de IA aparecem ao longo dos projetos.",
+      skill_group_frontend: "Interface",
+      skill_group_backend: "Backend & APIs",
+      skill_group_data: "Dados & segurança",
+      skill_group_practice: "Produto & entrega",
       label_redes: "Redes", label_ia: "IA", label_bd: "Banco de Dados",
       legend_estudou: "Já estudou", legend_estudando: "Estudando agora",
       projetos_label: "Projetos", projetos_title: "O que já construí",
-      projetos_p: "Alguns projetos testes feitos todos com consulta de IA e codados no VS Code.",
+      projetos_p: "Uma trajetória prática que começou com exercícios web e avançou para produtos digitais completos, sistemas de gestão e soluções implantadas para negócios reais.",
+      proj1_kind: "Experimento web", proj2_kind: "Aplicação interativa", proj3_kind: "Presença digital", proj4_kind: "Experiência de marca", proj5_kind: "Produto digital", proj6_kind: "Sistema de gestão", proj7_kind: "Plataforma de conteúdo",
       proj1_title: "Linguagens de Programação - Alura",
-      proj1_desc: "Trabalho feito pra conclusão de um workshop oferecido pela Alura, nele aprendemos a usar o Gemini na criação de aplicações web.",
+      proj1_desc: "Projeto de conclusão de workshop da Alura: uma aplicação web criada com apoio do Gemini. Foi um dos primeiros exercícios para transformar um briefing em interface, estruturar HTML e CSS e adicionar comportamento com JavaScript.",
       proj2_title: "Babá Eletrônica",
       proj2_desc: "Simula um dispositivo de monitoramento para bebês/pets. Desenvolvido em Python, conta com recursos de WebSockets, Google Drive API e MediaRecorder API.",
       proj3_title: "Duplotec — Landing Page",
-      proj3_desc: "Site institucional da Duplotec, loja de assistência técnica em Mondubim (Fortaleza-CE), feito como case de portfólio da minha marca freelance, a AURA Digital Studio. HTML/CSS/JS puros, com carrossel de depoimentos reais do Google e schema de SEO (FAQPage e LocalBusiness).",
-      proj4_title: "AURA Digital Studio — Landing Page",
-      proj4_desc: "Landing page da AURA Digital Studio, meu estúdio freelance de sites de alta conversão. Traz os planos de serviço, um simulador de investimento em tempo real e o case da Duplotec como prova social — tudo em HTML/CSS/JS puros, sem frameworks.",
-      link_code: "Código ↗",
+      proj3_desc: "Site institucional para assistência técnica e acessórios, pensado para apresentar serviços, reforçar confiança e facilitar o contato local. O projeto aprofundou a criação de páginas responsivas, prova social com avaliações e dados estruturados para SEO local.",
+      proj4_title: "AURA Digital Studio — Site comercial",
+      proj4_desc: "Site de aquisição para um estúdio digital, com apresentação de serviços, simulador de investimento, prova social e chamadas para conversa. Reúne experiência em copy de conversão, identidade visual, responsividade, animações, SEO e encaminhamento de leads.",
+      proj5_title: "Cativa — Gestão para clínicas",
+      proj5_desc: "Plataforma de gestão para clínicas e salões, com agenda, clientes, prontuário, financeiro, estoque e relacionamento. O trabalho evoluiu para arquitetura full-stack com Cloudflare Workers e D1, controle de acesso, auditoria, proteção de dados sensíveis, backups e fluxos reais de operação.",
+      proj6_title: "Pinheiro Locações — Sistema de gestão",
+      proj6_desc: "Sistema mobile-first para administrar uma locadora de equipamentos: disponibilidade e reservas, contratos e cobranças, manutenção e indicadores financeiros. O projeto desenvolveu experiência em modelagem de regras de negócio, persistência, privacidade LGPD, documentos operacionais, backups e implantação em produção.",
+      proj7_title: "N3 Produções — Portfólio cultural",
+      proj7_desc: "Plataforma para apresentar projetos culturais e publicações, com painel administrativo para manter o catálogo atualizado. O escopo ampliou a experiência em aplicações orientadas a conteúdo, APIs, banco D1, armazenamento R2 e publicação com Cloudflare Pages.",
+      link_code: "Código ↗", link_demo: "Ver projeto", link_learn_more: "Saiba mais",
       footer_text: "2026 · Todos os direitos reservados · Registro de bordo em construção. Foco em semântica, performance e código limpo.",
       aria_whatsapp: "Falar no WhatsApp"
     },
@@ -559,7 +654,7 @@
       nav_sobre: "About", nav_skills: "Skills", nav_projetos: "Projects", nav_contato: "Contact",
       hero_eyebrow: "// beginner dev · computer science",
       hero_h1: 'Exploring the <em>universe of computing</em>, one line of code at a time.',
-      hero_lede: "Hi, I'm Ferreira Júnior, a Computer Science student at Estácio just starting out as an IT professional. This space is where I document my progress, what I'm learning, and the projects I'm working on.",
+      hero_lede: "Hi, I'm Francisco Eudes Ferreira Júnior, a Computer Science student at Estácio just starting out as an IT professional. This space is where I document my progress, what I'm learning, and the projects I'm working on.",
       btn_ver_projetos: "View projects",
       sobre_label: "About", sobre_title: "Who's behind the code...",
       sobre_p1: "My journey into tech didn't start the traditional way. For the past few years I built a solid career operating and directing live TV broadcasts — a high-pressure environment where solving complex problems fast is the norm. Driven by curiosity and a deep passion for computing, I decided to take a new step and move into a career in technology.",
@@ -570,20 +665,37 @@
       fact_ia_label: "Use of AI", fact_ia_value: "Building and coding projects",
       fact_disponivel_label: "Available for", fact_disponivel_value: "Internship",
       skills_label: "Skills", skills_title: "Skills map",
-      skills_p: "Each star is a technology — gold ones have already been studied, violet ones are in progress. Generative AI is also part of the process: I use it to learn faster and prototype projects.",
+      skills_p: "The map connects the foundations I apply in projects with technologies I am exploring. The links show how these areas come together when building interfaces and digital products.",
+      skills_foundation_title: "Interface & experience",
+      skills_foundation_desc: "Semantic HTML, responsive CSS, and JavaScript power sites, catalogs, dashboards, and interactive tools. Project work also includes SVG, accessibility, SEO, animation, and PWAs.",
+      skills_expanding_title: "Services, data & operations",
+      skills_expanding_desc: "Projects use Workers, REST APIs and WebSockets, SQL/D1 and SQLite, R2 storage, media integrations, and automation. Business systems also include security, authentication, audit trails, encryption, and backups.",
+      skills_tools_title: "Tools & integrations",
+      skills_tools_desc: "Git and GitHub, Cloudflare Pages and Workers, Google Drive, MediaRecorder, Leaflet/OpenStreetMap, Mercado Pago, and AI tools appear across projects.",
+      skill_group_frontend: "Frontend",
+      skill_group_backend: "Backend & APIs",
+      skill_group_data: "Data & security",
+      skill_group_practice: "Product & delivery",
       label_redes: "Networking", label_ia: "AI", label_bd: "Databases",
       legend_estudou: "Already studied", legend_estudando: "Currently studying",
       projetos_label: "Projects", projetos_title: "What I've built so far",
-      projetos_p: "A few test projects, all built with AI assistance and coded in VS Code.",
+      projetos_p: "A practical progression from web exercises to complete digital products, business management systems, and solutions deployed for real organizations.",
+      proj1_kind: "Web experiment", proj2_kind: "Interactive app", proj3_kind: "Digital presence", proj4_kind: "Brand experience", proj5_kind: "Digital product", proj6_kind: "Management system", proj7_kind: "Content platform",
       proj1_title: "Programming Languages - Alura",
-      proj1_desc: "Built to complete a workshop offered by Alura, where we learned to use Gemini to build web applications.",
+      proj1_desc: "A web application built as the final project for an Alura workshop with Gemini. An early exercise in turning a brief into an interface, structuring HTML and CSS, and adding behavior with JavaScript.",
       proj2_title: "Baby Monitor",
       proj2_desc: "Simulates a monitoring device for babies/pets. Built with Python, featuring WebSockets, the Google Drive API, and the MediaRecorder API.",
       proj3_title: "Duplotec — Landing Page",
-      proj3_desc: "Institutional site for Duplotec, a phone repair and accessories shop in Mondubim (Fortaleza-CE), built as a portfolio case for my freelance brand, AURA Digital Studio. Pure HTML/CSS/JS, with a real Google-reviews testimonial carousel and SEO schema (FAQPage and LocalBusiness).",
-      proj4_title: "AURA Digital Studio — Landing Page",
-      proj4_desc: "Landing page for AURA Digital Studio, my freelance studio for high-conversion websites. Features service plans, a real-time investment calculator, and the Duplotec project as a social-proof case study — all in pure HTML/CSS/JS, no frameworks.",
-      link_code: "Code ↗",
+      proj3_desc: "Institutional site for a local phone repair and accessories business, designed to present services, build trust, and make it easy to get in touch. It developed skills in responsive pages, review-based social proof, and structured data for local SEO.",
+      proj4_title: "AURA Digital Studio — Business website",
+      proj4_desc: "Lead-generation site for a digital studio, with service details, an investment calculator, social proof, and contact calls to action. It brings together conversion copy, visual identity, responsive design, animation, SEO, and lead routing.",
+      proj5_title: "Cativa — Clinic management",
+      proj5_desc: "Management platform for clinics and salons, covering scheduling, clients, records, finance, inventory, and customer engagement. The work grew into a full-stack Cloudflare Workers and D1 architecture with access controls, audit logs, sensitive-data protection, backups, and real operational workflows.",
+      proj6_title: "Pinheiro Locações — Management system",
+      proj6_desc: "Mobile-first system for an equipment rental business, covering availability and reservations, contracts and payments, maintenance, and financial indicators. It developed experience in business rules, persistence, LGPD privacy, operational documents, backups, and production deployment.",
+      proj7_title: "N3 Produções — Cultural portfolio",
+      proj7_desc: "Platform for presenting cultural projects and publications, with an admin panel to maintain the catalog. The scope expanded experience with content-driven applications, APIs, D1 database, R2 storage, and deployment to Cloudflare Pages.",
+      link_code: "Code ↗", link_demo: "Explore project", link_learn_more: "Learn more",
       footer_text: "2026 · All rights reserved · Dev log still under construction. Focused on semantics, performance, and clean code.",
       aria_whatsapp: "Chat on WhatsApp"
     },
@@ -591,7 +703,7 @@
       nav_sobre: "Sobre mí", nav_skills: "Habilidades", nav_projetos: "Proyectos", nav_contato: "Contacto",
       hero_eyebrow: "// dev principiante · ciencias de la computación",
       hero_h1: 'Explorando el <em>universo de la computación</em>, una línea de código a la vez.',
-      hero_lede: "Hola, soy Ferreira Júnior, estudiante de Ciencias de la Computación en Estácio y al comienzo de mi camino como profesional de TI. Este espacio es donde documento mi progreso, lo que estoy aprendiendo y los proyectos en los que participo.",
+      hero_lede: "Hola, soy Francisco Eudes Ferreira Júnior, estudiante de Ciencias de la Computación en Estácio y al comienzo de mi camino como profesional de TI. Este espacio es donde documento mi progreso, lo que estoy aprendiendo y los proyectos en los que participo.",
       btn_ver_projetos: "Ver proyectos",
       sobre_label: "Sobre mí", sobre_title: "Quién está detrás del código...",
       sobre_p1: "Mi camino hacia la tecnología no empezó de forma tradicional. En los últimos años construí una carrera sólida operando y dirigiendo transmisiones de TV en vivo — un entorno de altísima presión donde resolver problemas complejos y actuar rápido es la norma. Movido por la curiosidad y una pasión profunda por la computación, decidí dar un nuevo paso y hacer la transición hacia la tecnología.",
@@ -602,20 +714,37 @@
       fact_ia_label: "Uso de IA", fact_ia_value: "Desarrollo de proyectos/código",
       fact_disponivel_label: "Disponible para", fact_disponivel_value: "Prácticas",
       skills_label: "Habilidades", skills_title: "Mapa de habilidades",
-      skills_p: "Cada estrella es una tecnología — las doradas ya fueron estudiadas, las violeta están en estudio. La IA generativa también es parte del proceso: la uso para aprender más rápido y prototipar proyectos.",
+      skills_p: "El mapa relaciona los fundamentos que aplico en proyectos con las tecnologías que estoy explorando. Las conexiones muestran cómo se combinan estas áreas al crear interfaces y productos digitales.",
+      skills_foundation_title: "Interfaz y experiencia",
+      skills_foundation_desc: "HTML semántico, CSS adaptable y JavaScript forman la base de sitios, catálogos, paneles y herramientas interactivas. También hay práctica con SVG, accesibilidad, SEO, animaciones y PWA.",
+      skills_expanding_title: "Servicios, datos y operación",
+      skills_expanding_desc: "Los proyectos usan Workers, API REST y WebSockets, SQL/D1 y SQLite, almacenamiento R2, integraciones multimedia y automatizaciones. Los sistemas de negocio incluyen seguridad, autenticación, auditoría, cifrado y copias de seguridad.",
+      skills_tools_title: "Herramientas e integraciones",
+      skills_tools_desc: "Git y GitHub, Cloudflare Pages y Workers, Google Drive, MediaRecorder, Leaflet/OpenStreetMap, Mercado Pago y herramientas de IA aparecen en los proyectos.",
+      skill_group_frontend: "Interfaz",
+      skill_group_backend: "Backend y API",
+      skill_group_data: "Datos y seguridad",
+      skill_group_practice: "Producto y entrega",
       label_redes: "Redes", label_ia: "IA", label_bd: "Bases de Datos",
       legend_estudou: "Ya estudiado", legend_estudando: "Estudiando ahora",
       projetos_label: "Proyectos", projetos_title: "Lo que ya construí",
-      projetos_p: "Algunos proyectos de prueba, todos hechos con ayuda de IA y programados en VS Code.",
+      projetos_p: "Una trayectoria práctica que comenzó con ejercicios web y avanzó hacia productos digitales completos, sistemas de gestión y soluciones implantadas para negocios reales.",
+      proj1_kind: "Experimento web", proj2_kind: "Aplicación interactiva", proj3_kind: "Presencia digital", proj4_kind: "Experiencia de marca", proj5_kind: "Producto digital", proj6_kind: "Sistema de gestión", proj7_kind: "Plataforma de contenido",
       proj1_title: "Lenguajes de Programación - Alura",
       proj1_desc: "Trabajo hecho para concluir un taller ofrecido por Alura, donde aprendimos a usar Gemini para crear aplicaciones web.",
       proj2_title: "Niñera Electrónica",
       proj2_desc: "Simula un dispositivo de monitoreo para bebés/mascotas. Desarrollado en Python, con WebSockets, la API de Google Drive y la API MediaRecorder.",
       proj3_title: "Duplotec — Landing Page",
-      proj3_desc: "Sitio institucional de Duplotec, una tienda de asistencia técnica en Mondubim (Fortaleza-CE), creado como caso de portafolio de mi marca freelance, AURA Digital Studio. HTML/CSS/JS puros, con un carrusel de reseñas reales de Google y esquema de SEO (FAQPage y LocalBusiness).",
-      proj4_title: "AURA Digital Studio — Landing Page",
-      proj4_desc: "Landing page de AURA Digital Studio, mi estudio freelance de sitios de alta conversión. Incluye los planes de servicio, una calculadora de inversión en tiempo real y el caso de Duplotec como prueba social — todo en HTML/CSS/JS puros, sin frameworks.",
-      link_code: "Código ↗",
+      proj3_desc: "Sitio institucional para un negocio local de reparación y accesorios, pensado para presentar servicios, generar confianza y facilitar el contacto. El proyecto desarrolló habilidades en páginas adaptables, reseñas como prueba social y datos estructurados para SEO local.",
+      proj4_title: "AURA Digital Studio — Sitio comercial",
+      proj4_desc: "Sitio para captar clientes para un estudio digital, con servicios, simulador de inversión, prueba social y llamadas al contacto. Reúne experiencia en textos de conversión, identidad visual, diseño adaptable, animaciones, SEO y gestión de contactos.",
+      proj5_title: "Cativa — Gestión para clínicas",
+      proj5_desc: "Plataforma de gestión para clínicas y salones, con agenda, clientes, historiales, finanzas, inventario y relación con clientes. El trabajo evolucionó hacia una arquitectura full-stack con Cloudflare Workers y D1, control de acceso, auditoría, protección de datos sensibles, copias de seguridad y flujos operativos reales.",
+      proj6_title: "Pinheiro Locações — Sistema de gestión",
+      proj6_desc: "Sistema mobile-first para gestionar el alquiler de equipos: disponibilidad y reservas, contratos y cobros, mantenimiento e indicadores financieros. El proyecto desarrolló experiencia en reglas de negocio, persistencia, privacidad LGPD, documentos operativos, copias de seguridad y despliegue en producción.",
+      proj7_title: "N3 Produções — Portafolio cultural",
+      proj7_desc: "Plataforma para presentar proyectos culturales y publicaciones, con panel administrativo para mantener el catálogo actualizado. El alcance amplió la experiencia en aplicaciones de contenido, APIs, base de datos D1, almacenamiento R2 y publicación en Cloudflare Pages.",
+      link_code: "Código ↗", link_demo: "Ver proyecto", link_learn_more: "Más información",
       footer_text: "2026 · Todos los derechos reservados · Bitácora aún en construcción. Enfocado en semántica, rendimiento y código limpio.",
       aria_whatsapp: "Hablar por WhatsApp"
     }
@@ -649,31 +778,69 @@
   // padrão: português do Brasil
   applyLanguage('pt');
 
-  // parallax leve nos blobs de fundo, seguindo o mouse
-  const blobs = document.querySelectorAll('.blob');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduceMotion){
-    window.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 30;
-      const y = (e.clientY / window.innerHeight - 0.5) * 30;
-      blobs.forEach((b, i) => {
-        const factor = (i + 1) * 0.6;
-        b.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
-      });
-    });
+  // Generative ambient flow inspired by the supplied gateway visualization.
+  const flowCanvas=document.getElementById('flow-canvas');
+  const flow=flowCanvas&&flowCanvas.getContext('2d',{alpha:true});
+  if(flow&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    let w=0,h=0,frame=0,t=0,points=[];
+    const colors=['242,184,75','156,143,224','145,200,189'];
+    const resize=()=>{const d=Math.min(devicePixelRatio||1,1.5);w=innerWidth;h=innerHeight;flowCanvas.width=w*d;flowCanvas.height=h*d;flow.setTransform(d,0,0,d,0,0);const n=Math.min(220,Math.round(w*h/7200));points=Array.from({length:n},(_,i)=>({x:Math.random()*w,y:Math.random()*h,p:Math.random()*6.28,s:.25+Math.random()*.35,c:colors[i%3],r:.4+Math.random()*.75}));};
+    const draw=()=>{flow.clearRect(0,0,w,h);for(let i=0;i<points.length;i++){const a=points[i];a.p+=.004*a.s;const ax=a.x+Math.sin(a.p+t*.001)*16, ay=a.y+Math.cos(a.p*.8+t*.0008)*12;flow.fillStyle=`rgba(${a.c},${.12+(Math.sin(a.p)+1)*.09})`;flow.beginPath();flow.arc(ax,ay,a.r,0,6.283);flow.fill();for(let j=i+1;j<Math.min(i+5,points.length);j++){const b=points[j],dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy);if(dist<78){flow.strokeStyle=`rgba(174,177,198,${(1-dist/78)*.045})`;flow.lineWidth=.5;flow.beginPath();flow.moveTo(ax,ay);flow.lineTo(b.x,b.y);flow.stroke();}}}t++;frame=requestAnimationFrame(draw);};
+    resize();draw();addEventListener('resize',resize,{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(frame);else draw();});
   }
 
-  // reveal on scroll
+  // Single animated background layer with gentle pointer parallax.
+  const blobs = document.querySelectorAll('.blob');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (!reduceMotion && finePointer){
+    let pointerFrame = 0;
+    window.addEventListener('pointermove', (e) => {
+      if (pointerFrame) return;
+      pointerFrame = requestAnimationFrame(() => {
+        pointerFrame = 0;
+        const x = (e.clientX / window.innerWidth - .5) * 22;
+        const y = (e.clientY / window.innerHeight - .5) * 22;
+        blobs.forEach((b, i) => {
+          const factor = (i + 1) * .38;
+          b.style.translate = `${x * factor}px ${y * factor}px`;
+        });
+      });
+    }, { passive: true });
+  }
+
+  // Reveal sections in sequence as they enter the viewport.
   const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting){
-        entry.target.classList.add('in');
-        io.unobserve(entry.target);
-      }
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          const siblings = [...entry.target.parentElement.children].filter(el => el.classList.contains('reveal'));
+          entry.target.style.transitionDelay = `${Math.min(Math.max(siblings.indexOf(entry.target), 0) % 4, 3) * 90}ms`;
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => io.observe(el));
+  }
+
+  // Tiny pointer tilt on desktop; scroll remains untouched and touch stays static.
+  if (!reduceMotion && finePointer){
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('pointermove', e => {
+        const rect = card.getBoundingClientRect();
+        const rx = ((e.clientY - rect.top) / rect.height - .5) * -3;
+        const ry = ((e.clientX - rect.left) / rect.width - .5) * 3;
+        card.style.setProperty('--pointer-x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--pointer-y', `${e.clientY - rect.top}px`);
+        if (card.classList.contains('in')) card.style.transform = `translateY(-4px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }, { passive: true });
+      card.addEventListener('pointerleave', () => { card.style.transform = ''; });
     });
-  }, { threshold: 0.15 });
-  revealEls.forEach(el => io.observe(el));
+  }
 </script>
 
 </body>
